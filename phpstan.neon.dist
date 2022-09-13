@@ -1,0 +1,29 @@
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+  level: max
+  reportUnmatchedIgnoredErrors: false
+  checkMissingCallableSignature: true
+  tipsOfTheDay: false
+  errorFormat: compact
+  parallel:
+    maximumNumberOfProcesses: 7
+  paths:
+    - src
+  scanDirectories:
+    - vendor/squizlabs/php_codesniffer/src
+  ignoreErrors:
+    - message: '#^Method Jgut\\ECS\\Fixer\\AbstractConfigSet::getRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff\|PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, array<string, mixed>\|bool>\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Method Jgut\\ECS\\Fixer\\AbstractConfigSet::getTypeInferPhpCsFixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, true>\.$#'
+      path: src/AbstractConfigSet.php
+    # Depending on the versions installed some classes may be deprecated
+    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\(Array|Function)Notation\\NoTrailingCommaInSingleline(Array|FunctionCall)Fixer\.$#'
+      path: src/AbstractConfigSet.php
+    # Depending on the versions installed some classes may not exist
+    - message: '#^Class .+Fixer not found\.$#'
+      paths:
+        - src/AbstractConfigSet.php
+        - src/ConfigSet80.php
+        - src/ConfigSet81.php
