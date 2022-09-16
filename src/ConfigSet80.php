@@ -12,8 +12,10 @@ declare(strict_types=1);
 namespace Jgut\ECS\Fixer;
 
 use Composer\InstalledVersions;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpCsFixer\Fixer\Alias\ModernizeStrposFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
