@@ -30,7 +30,6 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMetho
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\FixmeSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\OneObjectStructurePerFileSniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\NestingLevelSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff;
@@ -296,6 +295,9 @@ use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 /**
+ * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
+ * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractConfigSet
@@ -390,27 +392,25 @@ abstract class AbstractConfigSet
     {
         return array_merge(
             $this->getPhpCsFixerRules(),
-            $this->getKubawerlosPhpCsFixerRules(),
-            $this->getPedroTrollerPhpCsFixerRules(),
-            $this->getSymplifyPhpCsFixerRules(),
-            $this->getPhpUnitPhpCsFixerRules(),
-            $this->getDoctrinePhpCsFixerRules(),
-            $this->getTypeInferPhpCsFixerRules(),
+            $this->getKubawerlosFixerRules(),
+            $this->getPedroTrollerFixerRules(),
+            $this->getSymplifyFixerRules(),
             $this->getPhpCodeSnifferRules(),
-            $this->getSlevomatPhpCodeSnifferRules(),
-            $this->getJuliangutPhpCodeSnifferRules(),
-            $this->getTypeInferPhpCodeSnifferRules(),
+            $this->getSlevomatSnifferRules(),
+            $this->getJuliangutSnifferRules(),
         );
     }
 
     /**
-     * @return array<string|class-string<FixerInterface>, array<string, mixed>|bool>
+     * @return PhpCsFixerRuleList
      *
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function getPhpCsFixerRules(): array
     {
+        /** @var PhpCsFixerRuleList $rules */
         $rules = [
             AlignMultilineCommentFixer::class => [
                 'comment_type' => 'phpdocs_like',
@@ -806,13 +806,97 @@ abstract class AbstractConfigSet
             $rules[NoTrailingCommaInSinglelineFixer::class] = true;
         }
 
+        if ($this->phpUnit) {
+            $rules = array_merge(
+                $rules,
+                [
+                    PhpUnitConstructFixer::class => [
+                        'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
+                    ],
+                    PhpUnitDedicateAssertFixer::class => [
+                        'target' => '5.6',
+                    ],
+                    PhpUnitDedicateAssertInternalTypeFixer::class => [
+                        'target' => '7.5',
+                    ],
+                    PhpUnitExpectationFixer::class => [
+                        'target' => '8.4',
+                    ],
+                    PhpUnitInternalClassFixer::class => [
+                        'types' => ['normal', 'final', 'abstract'],
+                    ],
+                    PhpUnitMethodCasingFixer::class => [
+                        'case' => 'camel_case',
+                    ],
+                    PhpUnitMockFixer::class => [
+                        'target' => '5.5',
+                    ],
+                    PhpUnitMockShortWillReturnFixer::class => true,
+                    PhpUnitNamespacedFixer::class => [
+                        'target' => '6.0',
+                    ],
+                    PhpUnitNoExpectationAnnotationFixer::class => [
+                        'target' => '4.3',
+                        'use_class_const' => true,
+                    ],
+                    PhpUnitSetUpTearDownVisibilityFixer::class => true,
+                    // PhpUnitSizeClassFixer::class => [
+                    //     'small',
+                    //     'medium',
+                    //     'large',
+                    // ],
+                    // PhpUnitStrictFixer::class => [
+                    //     'assertAttributeEquals',
+                    //     'assertAttributeNotEquals',
+                    //     'assertEquals',
+                    //     'assertNotEquals',
+                    // ],
+                    PhpUnitTestAnnotationFixer::class => [
+                        'style' => 'prefix',
+                    ],
+                    PhpUnitTestCaseStaticMethodCallsFixer::class => [
+                        'call_type' => 'static',
+                    ],
+                    // PhpUnitTestClassRequiresCoversFixer::class => true,
+                ],
+            );
+        }
+
+        if ($this->doctrine) {
+            $rules = array_merge(
+                $rules,
+                [
+                    DoctrineAnnotationArrayAssignmentFixer::class => true,
+                    DoctrineAnnotationBracesFixer::class => true,
+                    DoctrineAnnotationIndentationFixer::class => true,
+                    DoctrineAnnotationSpacesFixer::class => [
+                        'before_array_assignments_equals' => false,
+                        'after_array_assignments_equals' => false,
+                        'before_array_assignments_colon' => false,
+                        'after_array_assignments_colon' => false,
+                    ],
+                ],
+            );
+        }
+
+        if ($this->typeInfer) {
+            $rules = array_merge(
+                $rules,
+                [
+                    PhpdocToParamTypeFixer::class => true,
+                    PhpdocToPropertyTypeFixer::class => true,
+                    PhpdocToReturnTypeFixer::class => true,
+                ],
+            );
+        }
+
         return $rules;
     }
 
     /**
-     * @return array<string|class-string<FixerInterface>, array<string, mixed>|bool>
+     * @return PhpCsFixerRuleList
      */
-    private function getKubawerlosPhpCsFixerRules(): array
+    private function getKubawerlosFixerRules(): array
     {
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
@@ -854,13 +938,35 @@ abstract class AbstractConfigSet
             $rules[PhpdocTypesCommaSpacesFixer::class] = true;
         }
 
+        if ($this->phpUnit) {
+            $rules = array_merge(
+                $rules,
+                [
+                    DataProviderNameFixer::class => [
+                        'prefix' => '',
+                        'suffix' => 'Provider',
+                    ],
+                ],
+            );
+        }
+
+        if ($this->doctrine) {
+            $rules = array_merge(
+                $rules,
+                [
+                    NoDoctrineMigrationsGeneratedCommentFixer::class => true,
+                    NoUselessDoctrineRepositoryCommentFixer::class => true,
+                ],
+            );
+        }
+
         return $rules;
     }
 
     /**
-     * @return array<string|class-string<FixerInterface>, array<string, mixed>|bool>
+     * @return PhpCsFixerRuleList
      */
-    private function getPedroTrollerPhpCsFixerRules(): array
+    private function getPedroTrollerFixerRules(): array
     {
         return [
             CommentLineToPhpdocBlockFixer::class => true,
@@ -875,11 +981,11 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return array<string|class-string<FixerInterface>, array<string, mixed>|bool>
+     * @return PhpCsFixerRuleList
      */
-    private function getSymplifyPhpCsFixerRules(): array
+    private function getSymplifyFixerRules(): array
     {
-        return [
+        $rules = [
             DocBlockLineLengthFixer::class => true,
             LineLengthFixer::class => [
                 'inline_short_lines' => false,
@@ -887,141 +993,27 @@ abstract class AbstractConfigSet
             MethodChainingNewlineFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
         ];
-    }
 
-    /**
-     * @return array<class-string<FixerInterface>, array<string, mixed>|bool>
-     */
-    private function getPhpUnitPhpCsFixerRules(): array
-    {
-        if ($this->phpUnit === false) {
-            return [];
+        if ($this->doctrine) {
+            $rules = array_merge(
+                $rules,
+                [
+                    DoctrineAnnotationNestedBracketsFixer::class => true,
+                ],
+            );
         }
 
-        return [
-            // friendsofphp/php-cs-fixer
-            PhpUnitConstructFixer::class => [
-                'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
-            ],
-            PhpUnitDedicateAssertFixer::class => [
-                'target' => '5.6',
-            ],
-            PhpUnitDedicateAssertInternalTypeFixer::class => [
-                'target' => '7.5',
-            ],
-            PhpUnitExpectationFixer::class => [
-                'target' => '8.4',
-            ],
-            PhpUnitInternalClassFixer::class => [
-                'types' => ['normal', 'final', 'abstract'],
-            ],
-            PhpUnitMethodCasingFixer::class => [
-                'case' => 'camel_case',
-            ],
-            PhpUnitMockFixer::class => [
-                'target' => '5.5',
-            ],
-            PhpUnitMockShortWillReturnFixer::class => true,
-            PhpUnitNamespacedFixer::class => [
-                'target' => '6.0',
-            ],
-            PhpUnitNoExpectationAnnotationFixer::class => [
-                'target' => '4.3',
-                'use_class_const' => true,
-            ],
-            PhpUnitSetUpTearDownVisibilityFixer::class => true,
-            // PhpUnitSizeClassFixer::class => [
-            //     'small',
-            //     'medium',
-            //     'large',
-            // ],
-            // PhpUnitStrictFixer::class => [
-            //     'assertAttributeEquals',
-            //     'assertAttributeNotEquals',
-            //     'assertEquals',
-            //     'assertNotEquals',
-            // ],
-            PhpUnitTestAnnotationFixer::class => [
-                'style' => 'prefix',
-            ],
-            PhpUnitTestCaseStaticMethodCallsFixer::class => [
-                'call_type' => 'static',
-            ],
-            // PhpUnitTestClassRequiresCoversFixer::class => true,
-
-            // kubawerlos/php-cs-fixer-custom-fixers
-            DataProviderNameFixer::class => [
-                'prefix' => '',
-                'suffix' => 'Provider',
-            ],
-        ];
+        return $rules;
     }
 
     /**
-     * @return array<class-string<FixerInterface>, array<string, mixed>|bool>
-     */
-    private function getDoctrinePhpCsFixerRules(): array
-    {
-        if ($this->doctrine === false) {
-            return [];
-        }
-
-        return [
-            // friendsofphp/php-cs-fixer
-            DoctrineAnnotationArrayAssignmentFixer::class => true,
-            DoctrineAnnotationBracesFixer::class => true,
-            DoctrineAnnotationIndentationFixer::class => true,
-            DoctrineAnnotationSpacesFixer::class => [
-                'before_array_assignments_equals' => false,
-                'after_array_assignments_equals' => false,
-                'before_array_assignments_colon' => false,
-                'after_array_assignments_colon' => false,
-            ],
-
-            // kubawerlos/php-cs-fixer-custom-fixers
-            NoDoctrineMigrationsGeneratedCommentFixer::class => true,
-            NoUselessDoctrineRepositoryCommentFixer::class => true,
-
-            // symplify/coding-standard
-            DoctrineAnnotationNestedBracketsFixer::class => true,
-        ];
-    }
-
-    /**
-     * These are experimental rules.
-     *
-     * @return array<class-string<FixerInterface>, array<string, mixed>|bool>
-     */
-    private function getTypeInferPhpCsFixerRules(): array
-    {
-        if ($this->typeInfer === false) {
-            return [];
-        }
-
-        return [
-            // friendsofphp/php-cs-fixer
-            PhpdocToParamTypeFixer::class => true,
-            PhpdocToPropertyTypeFixer::class => true,
-            PhpdocToReturnTypeFixer::class => true,
-
-            // slevomat/coding-standard
-            ParameterTypeHintSniff::class => true,
-            PropertyTypeHintSniff::class => true,
-            ReturnTypeHintSniff::class => true,
-        ];
-    }
-
-    /**
-     * @return array<class-string<Sniff>, array<string, mixed>|bool>
+     * @return PhpCodeSnifferRuleList
      */
     private function getPhpCodeSnifferRules(): array
     {
         return [
             CommentedOutCodeSniff::class => [
                 'maxPercentage' => 70,
-            ],
-            CyclomaticComplexitySniff::class => [
-                'absoluteComplexity' => 10,
             ],
             DeprecatedFunctionsSniff::class => true,
             DisallowRequestSuperglobalSniff::class => true,
@@ -1049,11 +1041,11 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return array<class-string<Sniff>, array<string, mixed>|bool>
+     * @return PhpCodeSnifferRuleList
      */
-    private function getSlevomatPhpCodeSnifferRules(): array
+    private function getSlevomatSnifferRules(): array
     {
-        return [
+        $rules = [
             AssignmentInConditionSniff::class => [
                 'ignoreAssignmentsInsideFunctionCalls' => true,
             ],
@@ -1089,35 +1081,29 @@ abstract class AbstractConfigSet
             UselessParenthesesSniff::class => true,
             UselessSemicolonSniff::class => true,
         ];
+
+        if ($this->typeInfer) {
+            $rules = array_merge(
+                $rules,
+                [
+                    ParameterTypeHintSniff::class => true,
+                    PropertyTypeHintSniff::class => true,
+                    ReturnTypeHintSniff::class => true,
+                ],
+            );
+        }
+
+        return $rules;
     }
 
     /**
-     * @return array<class-string<Sniff>, array<string, mixed>|bool>
+     * @return PhpCodeSnifferRuleList
      */
-    private function getJuliangutPhpCodeSnifferRules(): array
+    private function getJuliangutSnifferRules(): array
     {
         return [
             CamelCapsFunctionNameSniff::class => true,
             CamelCapsVariableNameSniff::class => true,
-        ];
-    }
-
-    /**
-     * These are experimental rules.
-     *
-     * @return array<class-string<Sniff>, array<string, mixed>|bool>
-     */
-    private function getTypeInferPhpCodeSnifferRules(): array
-    {
-        if ($this->typeInfer === false) {
-            return [];
-        }
-
-        return [
-            // slevomat/coding-standard
-            ParameterTypeHintSniff::class => true,
-            PropertyTypeHintSniff::class => true,
-            ReturnTypeHintSniff::class => true,
         ];
     }
 

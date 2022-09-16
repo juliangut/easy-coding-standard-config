@@ -12,10 +12,8 @@ declare(strict_types=1);
 namespace Jgut\ECS\Fixer;
 
 use Composer\InstalledVersions;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpCsFixer\Fixer\Alias\ModernizeStrposFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
@@ -26,6 +24,10 @@ use SlevomatCodingStandard\Sniffs\Exceptions\RequireNonCapturingCatchSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UnionTypeHintFormatSniff;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 
+/**
+ * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
+ * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ */
 class ConfigSet80 extends ConfigSet74
 {
     protected function getRequiredPhpVersion(): string
@@ -35,37 +37,26 @@ class ConfigSet80 extends ConfigSet74
 
     protected function getRules(): array
     {
-        /** @var array<class-string<Sniff|FixerInterface>, array<string, mixed>|bool> $rules */
-        $rules = array_merge(
+        return array_merge(
             parent::getRules(),
-            [
-                // slevomat/coding-standard
-                RequireConstructorPropertyPromotionSniff::class => true,
-                RequireNonCapturingCatchSniff::class => true,
-                UnionTypeHintFormatSniff::class => [
-                    'enable' => true,
-                    'withSpaces' => 'no',
-                    'shortNullable' => 'yes',
-                    'nullPosition' => 'last',
-                ],
-
-                // friendsofphp/php-cs-fixer
-                TrailingCommaInMultilineFixer::class => [
-                    'elements' => ['arrays', 'arguments', 'parameters'],
-                    'after_heredoc' => true,
-                ],
-
-                // kubawerlos/php-cs-fixer-custom-fixers
-                MultilinePromotedPropertiesFixer::class => true,
-                PromotedConstructorPropertyFixer::class => [
-                    'promote_only_existing_properties' => false,
-                ],
-                StringableInterfaceFixer::class => true,
-
-                // symplify/coding-standard
-                StandaloneLinePromotedPropertyFixer::class => true,
-            ],
+            $this->getPhpCsFixerRules(),
+            $this->getKubawerlosFixerRules(),
+            $this->getSymplifyFixerRules(),
+            $this->getSlevomatSnifferRules(),
         );
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getPhpCsFixerRules(): array
+    {
+        $rules = [
+            TrailingCommaInMultilineFixer::class => [
+                'elements' => ['arrays', 'arguments', 'parameters'],
+                'after_heredoc' => true,
+            ],
+        ];
 
         /** @var string $phpCsFixerVersion */
         $phpCsFixerVersion = preg_replace(
@@ -87,5 +78,46 @@ class ConfigSet80 extends ConfigSet74
         }
 
         return $rules;
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getKubawerlosFixerRules(): array
+    {
+        return [
+            MultilinePromotedPropertiesFixer::class => true,
+            PromotedConstructorPropertyFixer::class => [
+                'promote_only_existing_properties' => false,
+            ],
+            StringableInterfaceFixer::class => true,
+        ];
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getSymplifyFixerRules(): array
+    {
+        return [
+            StandaloneLinePromotedPropertyFixer::class => true,
+        ];
+    }
+
+    /**
+     * @return PhpCodeSnifferRuleList
+     */
+    private function getSlevomatSnifferRules(): array
+    {
+        return [
+            RequireConstructorPropertyPromotionSniff::class => true,
+            RequireNonCapturingCatchSniff::class => true,
+            UnionTypeHintFormatSniff::class => [
+                'enable' => true,
+                'withSpaces' => 'no',
+                'shortNullable' => 'yes',
+                'nullPosition' => 'last',
+            ],
+        ];
     }
 }

@@ -18,6 +18,10 @@ use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 
+/**
+ * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
+ * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ */
 class ConfigSet81 extends ConfigSet80
 {
     protected function getRequiredPhpVersion(): string
@@ -27,17 +31,19 @@ class ConfigSet81 extends ConfigSet80
 
     protected function getRules(): array
     {
-        /** @var array<class-string<Sniff|FixerInterface>, array<string, mixed>|bool> $rules */
-        $rules = array_merge(
+        return array_merge(
             parent::getRules(),
-            [
-                // slevomat/coding-standard
-                BackedEnumTypeSpacingSniff::class => [
-                    'spacesCountBeforeColon' => 0,
-                    'spacesCountBeforeType' => 1,
-                ],
-            ],
+            $this->getPhpCsFixerRules(),
+            $this->getSlevomatSnifferRules(),
         );
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getPhpCsFixerRules(): array
+    {
+        $rules = [];
 
         /** @var string $phpCsFixerVersion */
         $phpCsFixerVersion = preg_replace(
@@ -63,5 +69,18 @@ class ConfigSet81 extends ConfigSet80
         }
 
         return $rules;
+    }
+
+    /**
+     * @return PhpCodeSnifferRuleList
+     */
+    private function getSlevomatSnifferRules(): array
+    {
+        return [
+            BackedEnumTypeSpacingSniff::class => [
+                'spacesCountBeforeColon' => 0,
+                'spacesCountBeforeType' => 1,
+            ],
+        ];
     }
 }
