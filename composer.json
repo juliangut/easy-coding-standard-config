@@ -22,7 +22,7 @@
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.7",
         "nikic/php-parser": "^4.7",
         "pedrotroller/php-cs-custom-fixer": "^2.25",
-        "slevomat/coding-standard": "^8.0",
+        "slevomat/coding-standard": "^8.2",
         "symplify/coding-standard": "^9.3.26",
         "symplify/easy-coding-standard": "^11.1.8"
     },
