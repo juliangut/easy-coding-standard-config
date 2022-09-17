@@ -800,7 +800,7 @@ abstract class AbstractConfigSet
         if (version_compare($phpCsFixerVersion, '3.11', '>=')) {
             unset(
                 $rules[NoTrailingCommaInSinglelineArrayFixer::class],
-                $rules[NoTrailingCommaInSinglelineFunctionCallFixer::class],
+                $rules[NoTrailingCommaInSinglelineFunctionCallFixer::class]
             );
 
             $rules[NoTrailingCommaInSinglelineFixer::class] = true;

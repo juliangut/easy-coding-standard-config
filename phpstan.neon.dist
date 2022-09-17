@@ -14,10 +14,12 @@ parameters:
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
   ignoreErrors:
-    - message: '#^Method Jgut\\ECS\\Fixer\\AbstractConfigSet::getRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff\|PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, array<string, mixed>\|bool>\.$#'
-      path: src/AbstractConfigSet.php
-    - message: '#^Method Jgut\\ECS\\Fixer\\AbstractConfigSet::getTypeInferPhpCsFixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, true>\.$#'
-      path: src/AbstractConfigSet.php
+    - message: '#^Method Jgut\\ECS\\Fixer\\(Abstract)?ConfigSet(81)?::get.+FixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, (mixed|array<string, .+>)\|(bool|true)>\.$#'
+      paths:
+        - src/AbstractConfigSet.php
+        - src/ConfigSet81.php
+    - message: '#^Method Jgut\\ECS\\Fixer\\ConfigSet81::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, array<string, int>>\.$#'
+      path: src/ConfigSet81.php
     # Depending on the versions installed some classes may be deprecated
     - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\(Array|Function)Notation\\NoTrailingCommaInSingleline(Array|FunctionCall)Fixer\.$#'
       path: src/AbstractConfigSet.php
@@ -26,4 +28,7 @@ parameters:
       paths:
         - src/AbstractConfigSet.php
         - src/ConfigSet80.php
+        - src/ConfigSet81.php
+    - message: '#^Class .+Sniff not found\.$#'
+      paths:
         - src/ConfigSet81.php
