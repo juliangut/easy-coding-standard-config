@@ -14,12 +14,19 @@ parameters:
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
   ignoreErrors:
-    - message: '#^Method Jgut\\ECS\\Fixer\\(Abstract)?ConfigSet(81)?::get.+FixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, (mixed|array<string, .+>)\|(bool|true)>\.$#'
+    - message: '#^Method Jgut\\ECS\\Fixer\\(Abstract)?ConfigSet(\d{2})?::get.+FixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
       paths:
         - src/AbstractConfigSet.php
+        - src/ConfigSet80.php
         - src/ConfigSet81.php
-    - message: '#^Method Jgut\\ECS\\Fixer\\ConfigSet81::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, array<string, int>>\.$#'
+    - message: '#^Method Jgut\\ECS\\Fixer\\ConfigSet81::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
       path: src/ConfigSet81.php
+    - message: '#^Parameter \$ecsConfig of method Jgut\\ECS\\Fixer\\AbstractConfigSet::configure\(\) has invalid type Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Call to method .+\(\) on an unknown class Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Access to constant PSR_12 on an unknown class Symplify\\EasyCodingStandard\\ValueObject\\Set\\SetList\.$#'
+      path: src/AbstractConfigSet.php
     # Depending on the versions installed some classes may be deprecated
     - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\(Array|Function)Notation\\NoTrailingCommaInSingleline(Array|FunctionCall)Fixer\.$#'
       path: src/AbstractConfigSet.php
