@@ -13,6 +13,9 @@ parameters:
     - src
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
+  stubFiles:
+    - stubs/FixerInterface.stub
+    - stubs/ConfigurableFixerInterface.stub
   ignoreErrors:
     - message: '#^Method Jgut\\ECS\\Fixer\\(Abstract)?ConfigSet(\d{2})?::get.+FixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
       paths:

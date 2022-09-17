@@ -13,6 +13,7 @@ namespace Jgut\ECS\Fixer;
 
 use Composer\InstalledVersions;
 use DateTimeImmutable;
+use Jgut\ECS\Fixer\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
 use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
 use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
@@ -25,7 +26,6 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctio
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifierSniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnusedFunctionParameterSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\FixmeSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff;
@@ -285,7 +285,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff;
 use Symplify\CodingStandard\Fixer\Annotation\DoctrineAnnotationNestedBracketsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\LineLength\DocBlockLineLengthFixer;
@@ -395,6 +394,7 @@ abstract class AbstractConfigSet
             $this->getKubawerlosFixerRules(),
             $this->getPedroTrollerFixerRules(),
             $this->getSymplifyFixerRules(),
+            $this->getJuliangutFixerRules(),
             $this->getPhpCodeSnifferRules(),
             $this->getSlevomatSnifferRules(),
             $this->getJuliangutSnifferRules(),
@@ -1007,6 +1007,16 @@ abstract class AbstractConfigSet
     }
 
     /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getJuliangutFixerRules(): array
+    {
+        return [
+            FloatLeadingZeroFixer::class => true,
+        ];
+    }
+
+    /**
      * @return PhpCodeSnifferRuleList
      */
     private function getPhpCodeSnifferRules(): array
@@ -1034,7 +1044,6 @@ abstract class AbstractConfigSet
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
             UnnecessaryFinalModifierSniff::class => true,
-            UnusedFunctionParameterSniff::class => true,
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
@@ -1072,7 +1081,6 @@ abstract class AbstractConfigSet
             RequireNullCoalesceOperatorSniff::class => true,
             RequireShortTernaryOperatorSniff::class => true,
             UnusedInheritedVariablePassedToClosureSniff::class => true,
-            UnusedVariableSniff::class => true,
             UselessAliasSniff::class => true,
             UselessConstantTypeHintSniff::class => true,
             UselessInheritDocCommentSniff::class => true,
