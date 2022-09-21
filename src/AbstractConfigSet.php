@@ -13,6 +13,8 @@ namespace Jgut\ECS\Fixer;
 
 use Composer\InstalledVersions;
 use DateTimeImmutable;
+use Jgut\ECS\Fixer\Fixer\Comment\LeadingUppercaseCommentFixer;
+use Jgut\ECS\Fixer\Fixer\Comment\PhpdocLeadingUppercaseSummaryFixer;
 use Jgut\ECS\Fixer\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
 use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
 use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
@@ -1013,6 +1015,8 @@ abstract class AbstractConfigSet
     {
         return [
             FloatLeadingZeroFixer::class => true,
+            LeadingUppercaseCommentFixer::class => true,
+            PhpdocLeadingUppercaseSummaryFixer::class => true,
         ];
     }
 
