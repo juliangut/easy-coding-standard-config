@@ -34,10 +34,10 @@ class FloatLeadingZeroFixerTest extends AbstractFixerTestCase
     public function fixCasesProvider(): array
     {
         return [
-            'base leading zero' => [
+            'leading zero' => [
                 '<?php $floatVariable = 0.1;',
             ],
-            'base leading zero with config' => [
+            'leading zero with config' => [
                 '<?php $floatVariable = 0.1;',
                 null,
                 [FloatLeadingZeroFixer::LEADING_ZERO => true],
@@ -51,7 +51,7 @@ class FloatLeadingZeroFixerTest extends AbstractFixerTestCase
                 '<?php $floatVariable = .1;',
                 [FloatLeadingZeroFixer::LEADING_ZERO => true],
             ],
-            'base non leading zero with config' => [
+            'non leading zero with config' => [
                 '<?php $floatVariable = .1;',
                 null,
                 [FloatLeadingZeroFixer::LEADING_ZERO => false],

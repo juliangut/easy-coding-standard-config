@@ -31,7 +31,7 @@ class FloatLeadingZeroFixer extends AbstractFixer implements
     DocumentedRuleInterface
 {
     public const LEADING_ZERO = 'leading_zero';
-    private const ERROR_MESSAGE = 'Replace non multibyte-safe functions with corresponding mb function.';
+    private const ERROR_MESSAGE = 'Add/remove leading zero on float values.';
     private const PRIORITY = -1;
 
     protected $configuration = [];
