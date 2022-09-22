@@ -280,6 +280,7 @@ use SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosu
 use SlevomatCodingStandard\Sniffs\Functions\UselessParameterDefaultValueSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UselessAliasSniff;
 use SlevomatCodingStandard\Sniffs\Operators\RequireCombinedAssignmentOperatorSniff;
+use SlevomatCodingStandard\Sniffs\Operators\RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff;
 use SlevomatCodingStandard\Sniffs\PHP\ReferenceSpacingSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessSemicolonSniff;
@@ -1083,6 +1084,7 @@ abstract class AbstractConfigSet
             ],
             RequireNullCoalesceEqualOperatorSniff::class => true,
             RequireNullCoalesceOperatorSniff::class => true,
+            RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff::class,
             RequireShortTernaryOperatorSniff::class => true,
             UnusedInheritedVariablePassedToClosureSniff::class => true,
             UselessAliasSniff::class => true,
