@@ -31,6 +31,7 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifi
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\FixmeSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\OneObjectStructurePerFileSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\NestingLevelSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff;
@@ -1038,6 +1039,9 @@ abstract class AbstractConfigSet
             ForLoopWithTestFunctionCallSniff::class => true,
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
+            LineLengthSniff::class => [
+                'absoluteLineLimit' => 120,
+            ],
             JumbledIncrementerSniff::class => true,
             MemberVarScopeSniff::class => true,
             NestingLevelSniff::class => [
