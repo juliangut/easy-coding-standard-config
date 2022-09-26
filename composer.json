@@ -19,8 +19,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4|^8.0",
-        "juliangut/php-codesniffer-custom-sniffs": "dev-master",
-        "juliangut/php-cs-fixer-custom-fixers": "dev-master",
+        "juliangut/php-codesniffer-custom-sniffs": "^1.0",
+        "juliangut/php-cs-fixer-custom-fixers": "^1.0",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.7",
         "nikic/php-parser": "^4.7",
         "pedrotroller/php-cs-custom-fixer": "^2.25",
