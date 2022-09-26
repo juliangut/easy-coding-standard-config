@@ -13,11 +13,11 @@ namespace Jgut\ECS\Fixer;
 
 use Composer\InstalledVersions;
 use DateTimeImmutable;
-use Jgut\ECS\Fixer\Fixer\Comment\LeadingUppercaseCommentFixer;
-use Jgut\ECS\Fixer\Fixer\Comment\PhpdocLeadingUppercaseSummaryFixer;
-use Jgut\ECS\Fixer\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
-use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
-use Jgut\ECS\Fixer\Standard\Juliangut\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
+use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\LeadingUppercaseCommentFixer;
+use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\PhpdocLeadingUppercaseSummaryFixer;
+use Jgut\PhpCsFixerCustomFixers\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
+use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
+use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
 use PedroTroller\CS\Fixer\CodingStyle\ForbiddenFunctionsFixer;
 use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
@@ -1084,7 +1084,7 @@ abstract class AbstractConfigSet
             ],
             RequireNullCoalesceEqualOperatorSniff::class => true,
             RequireNullCoalesceOperatorSniff::class => true,
-            RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff::class,
+            RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff::class => true,
             RequireShortTernaryOperatorSniff::class => true,
             UnusedInheritedVariablePassedToClosureSniff::class => true,
             UselessAliasSniff::class => true,

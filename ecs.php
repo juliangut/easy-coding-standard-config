@@ -26,7 +26,6 @@ return static function (ECSConfig $ecsConfig) use ($header): void {
     $ecsConfig->paths([
         __FILE__,
         __DIR__ . '/src',
-        __DIR__ . '/tests',
     ]);
 
     if (\PHP_VERSION_ID >= 80_100) {
@@ -40,13 +39,10 @@ return static function (ECSConfig $ecsConfig) use ($header): void {
     $configSet
         ->setHeader($header)
         ->setAdditionalRules([
-            TrailingCommaInMultilineFixer::class => [ // Temporal while supporting PHP 7.1
+            TrailingCommaInMultilineFixer::class => [ // Temporal while supporting PHP 7.4
                 'elements' => ['arrays', 'arguments'],
                 'after_heredoc' => true,
             ],
-        ])
-        ->setAdditionalSkips([
-            __DIR__ . '/tests/Standard/Juliangut/Sniffs/**/data/*.php',
         ])
         ->configure($ecsConfig);
 };
