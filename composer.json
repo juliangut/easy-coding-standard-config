@@ -19,6 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.4|^8.0",
+        "dealerdirect/phpcodesniffer-composer-installer": "~0.7",
         "juliangut/php-codesniffer-custom-sniffs": "^1.0",
         "juliangut/php-cs-fixer-custom-fixers": "^1.0",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.7",
@@ -29,7 +30,6 @@
         "symplify/easy-coding-standard": "^11.1.8"
     },
     "require-dev": {
-        "dealerdirect/phpcodesniffer-composer-installer": "~0.7",
         "grifart/phpstan-oneline": "~0.4",
         "infection/infection": "~0.24",
         "overtrue/phplint": "^3.0|^4.0",
