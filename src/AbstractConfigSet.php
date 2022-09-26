@@ -1040,7 +1040,8 @@ abstract class AbstractConfigSet
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
             LineLengthSniff::class => [
-                'absoluteLineLimit' => 120,
+                'lineLimit' => 120,
+                'absoluteLineLimit' => 0,
             ],
             JumbledIncrementerSniff::class => true,
             MemberVarScopeSniff::class => true,
