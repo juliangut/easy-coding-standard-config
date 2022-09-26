@@ -54,7 +54,6 @@ use PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer;
 use PhpCsFixer\Fixer\Alias\PowToExponentiationFixer;
 use PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer;
 use PhpCsFixer\Fixer\Alias\SetTypeToCastFixer;
-use PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
@@ -572,7 +571,6 @@ abstract class AbstractConfigSet
             NoMixedEchoPrintFixer::class => [
                 'use' => 'echo',
             ],
-            NoMultilineWhitespaceAroundDoubleArrowFixer::class => true,
             NoNullPropertyInitializationFixer::class => true,
             NoPhp4ConstructorFixer::class => true,
             NoShortBoolCastFixer::class => true,
