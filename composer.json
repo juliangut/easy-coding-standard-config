@@ -48,7 +48,10 @@
     "autoload": {
         "psr-4": {
             "Jgut\\ECS\\Fixer\\": "src/"
-        }
+        },
+        "files": [
+            "bootstrap.php"
+        ]
     },
     "autoload-dev": {
     },
