@@ -16,6 +16,7 @@ use DateTimeImmutable;
 use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\LeadingUppercaseCommentFixer;
 use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\PhpdocLeadingUppercaseSummaryFixer;
 use Jgut\PhpCsFixerCustomFixers\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
+use JgutCodingStandard\Sniffs\CodeAnalysis\EmptyStatementSniff;
 use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
 use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
@@ -23,7 +24,6 @@ use PedroTroller\CS\Fixer\CodingStyle\ForbiddenFunctionsFixer;
 use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
 use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\EmptyStatementSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
@@ -1031,7 +1031,6 @@ abstract class AbstractConfigSet
             ],
             DeprecatedFunctionsSniff::class => true,
             DisallowRequestSuperglobalSniff::class => true,
-            EmptyStatementSniff::class => true,
             EvalSniff::class => true,
             FixmeSniff::class => true,
             ForLoopWithTestFunctionCallSniff::class => true,
@@ -1121,6 +1120,7 @@ abstract class AbstractConfigSet
         return [
             CamelCapsFunctionNameSniff::class => true,
             CamelCapsVariableNameSniff::class => true,
+            EmptyStatementSniff::class => true,
         ];
     }
 
