@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Jgut\ECS\Fixer;
+namespace Jgut\ECS\Config;
 
 use Composer\InstalledVersions;
 use PHP_CodeSniffer\Sniffs\Sniff;

@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-use Jgut\ECS\Fixer\ConfigSet74;
-use Jgut\ECS\Fixer\ConfigSet80;
-use Jgut\ECS\Fixer\ConfigSet81;
+use Jgut\ECS\Config\ConfigSet74;
+use Jgut\ECS\Config\ConfigSet80;
+use Jgut\ECS\Config\ConfigSet81;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 

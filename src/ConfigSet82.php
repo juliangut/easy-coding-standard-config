@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Jgut\ECS\Fixer;
+namespace Jgut\ECS\Config;
 
 /**
  * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
