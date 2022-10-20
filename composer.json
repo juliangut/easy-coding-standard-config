@@ -27,7 +27,7 @@
         "nikic/php-parser": "^4.7",
         "pedrotroller/php-cs-custom-fixer": "^2.25",
         "slevomat/coding-standard": "^8.2",
-        "squizlabs/php_codesniffer": "^3.6",
+        "squizlabs/php_codesniffer": "^3.7",
         "symplify/coding-standard": "^9.3.26",
         "symplify/easy-coding-standard": "^11.1.8"
     },

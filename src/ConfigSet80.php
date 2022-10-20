@@ -21,6 +21,9 @@ use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 use PhpCsFixerCustomFixers\Fixer\PromotedConstructorPropertyFixer;
 use PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer;
+use SlevomatCodingStandard\Sniffs\Attributes\AttributeAndTargetSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Attributes\DisallowAttributesJoiningSniff;
+use SlevomatCodingStandard\Sniffs\Attributes\RequireAttributeAfterDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\Classes\RequireConstructorPropertyPromotionSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\RequireNonCapturingCatchSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UnionTypeHintFormatSniff;
@@ -113,7 +116,7 @@ class ConfigSet80 extends ConfigSet74
      */
     private function getSlevomatSnifferRules(): array
     {
-        return [
+        $rules = [
             RequireConstructorPropertyPromotionSniff::class => true,
             RequireNonCapturingCatchSniff::class => true,
             UnionTypeHintFormatSniff::class => [
@@ -123,5 +126,20 @@ class ConfigSet80 extends ConfigSet74
                 'nullPosition' => 'last',
             ],
         ];
+
+        /** @var string $slevomatSnifferVersion */
+        $slevomatSnifferVersion = preg_replace(
+            '/^v/',
+            '',
+            InstalledVersions::getPrettyVersion('slevomat/coding-standard') ?? '',
+        );
+
+        if (version_compare($slevomatSnifferVersion, '8.6', '>=')) {
+            $rules[AttributeAndTargetSpacingSniff::class] = true;
+            $rules[DisallowAttributesJoiningSniff::class] = true;
+            $rules[RequireAttributeAfterDocCommentSniff::class] = true;
+        }
+
+        return $rules;
     }
 }
