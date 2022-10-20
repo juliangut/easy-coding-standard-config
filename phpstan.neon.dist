@@ -38,4 +38,5 @@ parameters:
         - src/ConfigSet81.php
     - message: '#^Class .+Sniff not found\.$#'
       paths:
+        - src/ConfigSet80.php
         - src/ConfigSet81.php

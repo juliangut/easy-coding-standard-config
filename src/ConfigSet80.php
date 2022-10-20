@@ -116,6 +116,7 @@ class ConfigSet80 extends ConfigSet74
      */
     private function getSlevomatSnifferRules(): array
     {
+        /** @var PhpCodeSnifferRuleList $rules */
         $rules = [
             RequireConstructorPropertyPromotionSniff::class => true,
             RequireNonCapturingCatchSniff::class => true,
