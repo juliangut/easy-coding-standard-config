@@ -11,10 +11,6 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
-/**
- * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
- * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
- */
 class ConfigSet82 extends ConfigSet81
 {
     protected function getRequiredPhpVersion(): string

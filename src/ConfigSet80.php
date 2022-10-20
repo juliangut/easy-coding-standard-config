@@ -30,8 +30,8 @@ use SlevomatCodingStandard\Sniffs\TypeHints\UnionTypeHintFormatSniff;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 
 /**
- * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
- * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
+ * @phpstan-import-type PhpCodeSnifferRuleList from AbstractConfigSet
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */

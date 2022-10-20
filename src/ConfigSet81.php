@@ -19,8 +19,8 @@ use PhpCsFixer\Fixer\FixerInterface;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 
 /**
- * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
- * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
+ * @phpstan-import-type PhpCodeSnifferRuleList from AbstractConfigSet
  */
 class ConfigSet81 extends ConfigSet80
 {
