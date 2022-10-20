@@ -127,14 +127,14 @@ class ConfigSet80 extends ConfigSet74
             ],
         ];
 
-        /** @var string $slevomatSnifferVersion */
-        $slevomatSnifferVersion = preg_replace(
+        /** @var string $slevomatVersion */
+        $slevomatVersion = preg_replace(
             '/^v/',
             '',
             InstalledVersions::getPrettyVersion('slevomat/coding-standard') ?? '',
         );
 
-        if (version_compare($slevomatSnifferVersion, '8.6', '>=')) {
+        if (version_compare($slevomatVersion, '8.6', '>=')) {
             $rules[AttributeAndTargetSpacingSniff::class] = true;
             $rules[DisallowAttributesJoiningSniff::class] = true;
             $rules[RequireAttributeAfterDocCommentSniff::class] = true;
