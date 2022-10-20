@@ -12,10 +12,8 @@ declare(strict_types=1);
 namespace Jgut\ECS\Config;
 
 use Composer\InstalledVersions;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
-use PhpCsFixer\Fixer\FixerInterface;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 
 /**
