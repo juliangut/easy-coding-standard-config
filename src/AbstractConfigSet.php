@@ -305,7 +305,7 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
  */
 abstract class AbstractConfigSet
 {
-    private ?string $header;
+    private ?string $header = null;
 
     private bool $doctrine = false;
 
