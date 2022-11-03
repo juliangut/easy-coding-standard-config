@@ -289,7 +289,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
-use Symplify\CodingStandard\Fixer\Annotation\DoctrineAnnotationNestedBracketsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\LineLength\DocBlockLineLengthFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
@@ -993,7 +992,7 @@ abstract class AbstractConfigSet
      */
     private function getSymplifyFixerRules(): array
     {
-        $rules = [
+        return [
             DocBlockLineLengthFixer::class => true,
             LineLengthFixer::class => [
                 'inline_short_lines' => false,
@@ -1001,17 +1000,6 @@ abstract class AbstractConfigSet
             MethodChainingNewlineFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
         ];
-
-        if ($this->doctrine) {
-            $rules = array_merge(
-                $rules,
-                [
-                    DoctrineAnnotationNestedBracketsFixer::class => true,
-                ],
-            );
-        }
-
-        return $rules;
     }
 
     /**
