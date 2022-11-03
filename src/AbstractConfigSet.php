@@ -983,6 +983,7 @@ abstract class AbstractConfigSet
             ],
             LineBreakBetweenMethodArgumentsFixer::class => [
                 'max-args' => false,
+                'automatic-argument-merge' => false,
             ],
         ];
     }
