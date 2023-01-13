@@ -319,7 +319,7 @@ abstract class AbstractConfigSet
     private array $additionalRules = [];
 
     /**
-     * @var array<int, string>|array<class-string<Sniff|FixerInterface>, array<string, mixed>>
+     * @var array<class-string<Sniff|FixerInterface>>
      */
     private array $additionalSkips = [];
 
@@ -357,7 +357,9 @@ abstract class AbstractConfigSet
             ];
         }
 
+        /** @var array<class-string<Sniff>> $reportSniffs */
         $reportSniffs = [];
+        /** @var array<class-string<Sniff|FixerInterface>> $skipRules */
         $skipRules = [];
 
         foreach ($rules as $rule => $config) {
@@ -1128,7 +1130,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return array<int, string>|array<class-string<Sniff|FixerInterface>, array<string, mixed>>
+     * @return array<class-string<Sniff|FixerInterface>>
      */
     protected function getSkips(): array
     {
@@ -1146,7 +1148,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @param array<int, string>|array<class-string<Sniff|FixerInterface>, array<string, mixed>> $additionalSkips
+     * @param array<class-string<Sniff|FixerInterface>> $additionalSkips
      */
     public function setAdditionalSkips(array $additionalSkips): self
     {
