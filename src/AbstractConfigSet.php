@@ -290,8 +290,6 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
-use Symplify\CodingStandard\Fixer\Annotation\DoctrineAnnotationNestedBracketsFixer;
-use Symplify\CodingStandard\Fixer\Annotation\DoctrineAnnotationNewlineInNestedAnnotationFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
@@ -1007,7 +1005,7 @@ abstract class AbstractConfigSet
      */
     private function getSymplifyFixerRules(): array
     {
-        $rules = [
+        return [
             DocBlockLineLengthFixer::class => true,
             LineLengthFixer::class => [
                 'inline_short_lines' => false,
@@ -1017,25 +1015,6 @@ abstract class AbstractConfigSet
             RemoveUselessDefaultCommentFixer::class => true,
             StandaloneLineInMultilineArrayFixer::class => true,
         ];
-
-        if ($this->doctrine) {
-            /** @var string $symplifyVersion */
-            $symplifyVersion = preg_replace(
-                '/^v/',
-                '',
-                InstalledVersions::getPrettyVersion('symplify/coding-standard') ?? '',
-            );
-
-            if (version_compare($symplifyVersion, '9.4.21', '<')) {
-                $rules[DoctrineAnnotationNewlineInNestedAnnotationFixer::class] = true;
-            }
-
-            if (version_compare($symplifyVersion, '9.4.21', '>=')) {
-                $rules[DoctrineAnnotationNestedBracketsFixer::class] = true;
-            }
-        }
-
-        return $rules;
     }
 
     /**
