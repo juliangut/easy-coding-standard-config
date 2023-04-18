@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
-use Composer\InstalledVersions;
 use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 
 /**
  * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
@@ -43,18 +43,11 @@ class ConfigSet81 extends ConfigSet80
     {
         $rules = [];
 
-        /** @var string $phpCsFixerVersion */
-        $phpCsFixerVersion = preg_replace(
-            '/^v/',
-            '',
-            InstalledVersions::getPrettyVersion('friendsofphp/php-cs-fixer') ?? '',
-        );
-
-        if (version_compare($phpCsFixerVersion, '3.2', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.2')) {
             $rules[OctalNotationFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.7', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.7')) {
             $rules[ClassAttributesSeparationFixer::class] = [
                 'elements' => [
                     'trait_import' => 'one',
@@ -74,11 +67,22 @@ class ConfigSet81 extends ConfigSet80
      */
     private function getSlevomatSnifferRules(): array
     {
-        return [
+        $rules = [
             BackedEnumTypeSpacingSniff::class => [
                 'spacesCountBeforeColon' => 0,
                 'spacesCountBeforeType' => 1,
             ],
         ];
+
+        if ($this->isMinSlevomatVersion('8.9')) {
+            $rules[EnumCaseSpacingSniff::class] = [
+                'minLinesCountBeforeWithComment' => 1,
+                'maxLinesCountBeforeWithComment' => 1,
+                'minLinesCountBeforeWithoutComment' => 1,
+                'maxLinesCountBeforeWithoutComment' => 1,
+            ];
+        }
+
+        return $rules;
     }
 }

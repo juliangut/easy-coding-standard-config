@@ -30,7 +30,13 @@ parameters:
     - message: '#^Access to constant PSR_12 on an unknown class Symplify\\EasyCodingStandard\\ValueObject\\Set\\SetList\.$#'
       path: src/AbstractConfigSet.php
     # Depending on the versions installed some classes may be deprecated
-    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\(Array|Function)Notation\\NoTrailingCommaInSingleline(Array|FunctionCall)Fixer\.$#'
+    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Basic\\BracesFixer\.$#'
+      path: src/AbstractConfigSet.php
+    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer\.$#'
       path: src/AbstractConfigSet.php
     # Depending on the versions installed some classes may not exist
     - message: '#^Class .+Fixer not found\.$#'

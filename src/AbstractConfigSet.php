@@ -143,6 +143,7 @@ use PhpCsFixer\Fixer\LanguageConstruct\FunctionToConstantFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixer;
 use PhpCsFixer\Fixer\ListNotation\ListSyntaxFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer;
 use PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer;
@@ -194,6 +195,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer;
@@ -236,7 +238,9 @@ use PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
+use PhpCsFixerCustomFixers\Fixer\ConstructorEmptyBracesFixer;
 use PhpCsFixerCustomFixers\Fixer\DataProviderNameFixer;
+use PhpCsFixerCustomFixers\Fixer\EmptyFunctionBodyFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
@@ -264,12 +268,14 @@ use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowLateStaticBindingForConstantsSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiConstantDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
+use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessInheritDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowContinueWithoutIntegerOperandInSwitchSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff;
+use SlevomatCodingStandard\Sniffs\ControlStructures\DisallowTrailingMultiLineTernaryOperatorSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\RequireMultiLineConditionSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\RequireMultiLineTernaryOperatorSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\RequireNullCoalesceEqualOperatorSniff;
@@ -286,10 +292,12 @@ use SlevomatCodingStandard\Sniffs\Operators\RequireOnlyStandaloneIncrementAndDec
 use SlevomatCodingStandard\Sniffs\PHP\ReferenceSpacingSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff;
 use SlevomatCodingStandard\Sniffs\PHP\UselessSemicolonSniff;
+use SlevomatCodingStandard\Sniffs\Strings\DisallowVariableParsingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
+use SlevomatCodingStandard\Sniffs\Variables\DisallowVariableVariableSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
@@ -304,6 +312,7 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
  * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class AbstractConfigSet
 {
@@ -739,14 +748,7 @@ abstract class AbstractConfigSet
             ],
         ];
 
-        /** @var string $phpCsFixerVersion */
-        $phpCsFixerVersion = preg_replace(
-            '/^v/',
-            '',
-            InstalledVersions::getPrettyVersion('friendsofphp/php-cs-fixer') ?? '',
-        );
-
-        if (version_compare($phpCsFixerVersion, '3.2', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.2')) {
             $rules[AssignNullCoalescingToCoalesceEqualFixer::class] = true;
             $rules[ControlStructureContinuationPositionFixer::class] = true;
             $rules[IntegerLiteralCaseFixer::class] = true;
@@ -754,17 +756,17 @@ abstract class AbstractConfigSet
             $rules[StringLengthToEmptyFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.6', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.6')) {
             $rules[ClassReferenceNameCasingFixer::class] = true;
             $rules[NoUnneededImportAliasFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.7', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.7')) {
             $rules[NoTrailingCommaInSinglelineFunctionCallFixer::class] = true;
             $rules[SingleLineCommentSpacingFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.8', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.8')) {
             $rules[DateTimeCreateFromFormatCallFixer::class] = true;
             $rules[TypesSpacesFixer::class] = [
                 'space' => 'none',
@@ -772,7 +774,7 @@ abstract class AbstractConfigSet
             ];
         }
 
-        if (version_compare($phpCsFixerVersion, '3.9.1', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.9.1')) {
             $rules[ControlStructureBracesFixer::class] = true;
             $rules[CurlyBracesPositionFixer::class] = true;
             $rules[NoExtraBlankLinesFixer::class] = [
@@ -794,17 +796,17 @@ abstract class AbstractConfigSet
             $rules[StatementIndentationFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.9.5', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.9.5')) {
             $rules[NoMultipleStatementsPerLineFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.10', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.10')) {
             $rules[WhitespaceAfterCommaInArrayFixer::class] = [
                 'ensure_single_space' => true,
             ];
         }
 
-        if (version_compare($phpCsFixerVersion, '3.11', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.11')) {
             unset(
                 $rules[NoTrailingCommaInSinglelineArrayFixer::class],
                 $rules[NoTrailingCommaInSinglelineFunctionCallFixer::class]
@@ -813,16 +815,25 @@ abstract class AbstractConfigSet
             $rules[NoTrailingCommaInSinglelineFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.12', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.12')) {
             $rules[NoUselessConcatOperatorFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.13', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.13')) {
             $rules[FunctionDeclarationFixer::class] = [
                 'closure_function_spacing' => 'one',
                 'closure_fn_spacing' => 'none',
                 'trailing_comma_single_line' => false,
             ];
+        }
+
+        if ($this->isMinPhpCsFixerVersion('3.16')) {
+            unset(
+                $rules[BracesFixer::class],
+                $rules[SingleSpaceAfterConstructFixer::class],
+            );
+
+            $rules[SingleSpaceAroundConstructFixer::class] = true;
         }
 
         if ($this->phpUnit) {
@@ -879,6 +890,10 @@ abstract class AbstractConfigSet
                     // PhpUnitTestClassRequiresCoversFixer::class => true,
                 ],
             );
+
+            if ($this->isMinPhpCsFixerVersion('3.14')) {
+                $rules[PhpUnitDataProviderStaticFixer::class] = true;
+            }
         }
 
         if ($this->doctrine) {
@@ -919,6 +934,7 @@ abstract class AbstractConfigSet
     {
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
+            ConstructorEmptyBracesFixer::class => true,
             IssetToArrayKeyExistsFixer::class => true,
             NoCommentedOutCodeFixer::class => true,
             NoDuplicatedArrayKeyFixer::class => [
@@ -946,15 +962,12 @@ abstract class AbstractConfigSet
             PhpdocTypesTrimFixer::class => true,
         ];
 
-        /** @var string $kubawerlosVersion */
-        $kubawerlosVersion = preg_replace(
-            '/^v/',
-            '',
-            InstalledVersions::getPrettyVersion('kubawerlos/php-cs-fixer-custom-fixers') ?? '',
-        );
-
-        if (version_compare($kubawerlosVersion, '3.9', '>=')) {
+        if ($this->isMinKubawerlosVersion('3.9')) {
             $rules[PhpdocTypesCommaSpacesFixer::class] = true;
+        }
+
+        if ($this->isMinKubawerlosVersion('3.14')) {
+            $rules[EmptyFunctionBodyFixer::class] = true;
         }
 
         if ($this->phpUnit) {
@@ -1107,6 +1120,16 @@ abstract class AbstractConfigSet
             UselessSemicolonSniff::class => true,
         ];
 
+        if ($this->isMinSlevomatVersion('8.9')) {
+            $rules[DisallowTrailingMultiLineTernaryOperatorSniff::class] = true;
+            $rules[DisallowVariableVariableSniff::class] = true;
+        }
+
+        if ($this->isMinSlevomatVersion('8.10')) {
+            $rules[DisallowStringExpressionPropertyFetchSniff::class] = true;
+            $rules[DisallowVariableParsingSniff::class] = true;
+        }
+
         if ($this->typeInfer) {
             $rules = array_merge(
                 $rules,
@@ -1202,5 +1225,29 @@ abstract class AbstractConfigSet
         $this->typeInfer = $typeInfer;
 
         return $this;
+    }
+
+    final protected function isMinPhpCsFixerVersion(string $version): bool
+    {
+        return $this->isMinLibraryVersion('friendsofphp/php-cs-fixer', $version);
+    }
+
+    final protected function isMinKubawerlosVersion(string $version): bool
+    {
+        return $this->isMinLibraryVersion('kubawerlos/php-cs-fixer-custom-fixers', $version);
+    }
+
+    final protected function isMinSlevomatVersion(string $version): bool
+    {
+        return $this->isMinLibraryVersion('slevomat/coding-standard', $version);
+    }
+
+    private function isMinLibraryVersion(string $library, string $comparisonVersion): bool
+    {
+        return version_compare(
+            (string) preg_replace('/^v/', '', InstalledVersions::getPrettyVersion($library) ?? ''),
+            $comparisonVersion,
+            '>=',
+        );
     }
 }

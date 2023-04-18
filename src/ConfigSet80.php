@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
-use Composer\InstalledVersions;
 use PhpCsFixer\Fixer\Alias\ModernizeStrposFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer;
@@ -63,22 +62,15 @@ class ConfigSet80 extends ConfigSet74
             ],
         ];
 
-        /** @var string $phpCsFixerVersion */
-        $phpCsFixerVersion = preg_replace(
-            '/^v/',
-            '',
-            InstalledVersions::getPrettyVersion('friendsofphp/php-cs-fixer') ?? '',
-        );
-
-        if (version_compare($phpCsFixerVersion, '3.2', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.2')) {
             $rules[ModernizeStrposFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.5', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.5')) {
             $rules[GetClassToClassKeywordFixer::class] = true;
         }
 
-        if (version_compare($phpCsFixerVersion, '3.9.1', '>=')) {
+        if ($this->isMinPhpCsFixerVersion('3.9.1')) {
             $rules[NoUselessNullsafeOperatorFixer::class] = true;
         }
 
@@ -125,14 +117,7 @@ class ConfigSet80 extends ConfigSet74
             ],
         ];
 
-        /** @var string $slevomatVersion */
-        $slevomatVersion = preg_replace(
-            '/^v/',
-            '',
-            InstalledVersions::getPrettyVersion('slevomat/coding-standard') ?? '',
-        );
-
-        if (version_compare($slevomatVersion, '8.6', '>=')) {
+        if ($this->isMinSlevomatVersion('8.6')) {
             $rules[AttributeAndTargetSpacingSniff::class] = true;
             $rules[DisallowAttributesJoiningSniff::class] = true;
             $rules[RequireAttributeAfterDocCommentSniff::class] = true;
