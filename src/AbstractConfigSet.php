@@ -830,7 +830,7 @@ abstract class AbstractConfigSet
         if ($this->isMinPhpCsFixerVersion('3.16')) {
             unset(
                 $rules[BracesFixer::class],
-                $rules[SingleSpaceAfterConstructFixer::class],
+                $rules[SingleSpaceAfterConstructFixer::class]
             );
 
             $rules[SingleSpaceAroundConstructFixer::class] = true;
