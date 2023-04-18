@@ -19,8 +19,9 @@ parameters:
         - src/AbstractConfigSet.php
         - src/ConfigSet80.php
         - src/ConfigSet81.php
-    - message: '#^Method Jgut\\ECS\\Config\\ConfigSet8(0|1)::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
+    - message: '#^Method Jgut\\ECS\\Config\\(Abstract)?ConfigSet(\d{2})?::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
       paths:
+        - src/AbstractConfigSet.php
         - src/ConfigSet80.php
         - src/ConfigSet81.php
     - message: '#^Parameter \$ecsConfig of method Jgut\\ECS\\Config\\AbstractConfigSet::configure\(\) has invalid type Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
