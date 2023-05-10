@@ -270,6 +270,7 @@ use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiConstantDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
+use SlevomatCodingStandard\Sniffs\Commenting\AnnotationNameSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\UselessInheritDocCommentSniff;
 use SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff;
@@ -1128,6 +1129,10 @@ abstract class AbstractConfigSet
         if ($this->isMinSlevomatVersion('8.10')) {
             $rules[DisallowStringExpressionPropertyFetchSniff::class] = true;
             $rules[DisallowVariableParsingSniff::class] = true;
+        }
+
+        if ($this->isMinSlevomatVersion('8.11')) {
+            $rules[AnnotationNameSniff::class] = true;
         }
 
         if ($this->typeInfer) {
