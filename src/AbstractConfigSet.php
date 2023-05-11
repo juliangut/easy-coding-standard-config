@@ -240,7 +240,6 @@ use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\ConstructorEmptyBracesFixer;
 use PhpCsFixerCustomFixers\Fixer\DataProviderNameFixer;
-use PhpCsFixerCustomFixers\Fixer\EmptyFunctionBodyFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
@@ -965,10 +964,6 @@ abstract class AbstractConfigSet
 
         if ($this->isMinKubawerlosVersion('3.9')) {
             $rules[PhpdocTypesCommaSpacesFixer::class] = true;
-        }
-
-        if ($this->isMinKubawerlosVersion('3.14')) {
-            $rules[EmptyFunctionBodyFixer::class] = true;
         }
 
         if ($this->phpUnit) {
