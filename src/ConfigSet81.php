@@ -50,7 +50,7 @@ class ConfigSet81 extends ConfigSet80
         if ($this->isMinPhpCsFixerVersion('3.7')) {
             $rules[ClassAttributesSeparationFixer::class] = [
                 'elements' => [
-                    'trait_import' => 'one',
+                    'trait_import' => 'none',
                     'const' => 'none',
                     'property' => 'one',
                     'method' => 'one',
