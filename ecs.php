@@ -12,23 +12,26 @@ declare(strict_types=1);
 use Jgut\ECS\Config\ConfigSet74;
 use Jgut\ECS\Config\ConfigSet80;
 use Jgut\ECS\Config\ConfigSet81;
+use Jgut\ECS\Config\ConfigSet82;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-$header = <<<'HEADER'
-(c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
+return static function (ECSConfig $ecsConfig): void {
+    $header = <<<'HEADER'
+    (c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
 
-@license BSD-3-Clause
-@link https://github.com/juliangut/easy-coding-standard-config
-HEADER;
+    @license BSD-3-Clause
+    @link https://github.com/juliangut/easy-coding-standard-config
+    HEADER;
 
-return static function (ECSConfig $ecsConfig) use ($header): void {
     $ecsConfig->paths([
         __FILE__,
         __DIR__ . '/src',
     ]);
 
-    if (\PHP_VERSION_ID >= 80_100) {
+    if (\PHP_VERSION_ID >= 80_200) {
+        $configSet = new ConfigSet82();
+    } elseif (\PHP_VERSION_ID >= 80_100) {
         $configSet = new ConfigSet81();
     } elseif (\PHP_VERSION_ID >= 80_000) {
         $configSet = new ConfigSet80();

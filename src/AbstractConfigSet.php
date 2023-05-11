@@ -1202,9 +1202,10 @@ abstract class AbstractConfigSet
             return null;
         }
 
+        $year = (new DateTimeImmutable('now'))->format('Y');
         $header = str_replace(
-            ['/**', ' */', ' * ', ' *', '{{year}}', '{{package}}'],
-            ['', '', '', '', (new DateTimeImmutable('now'))->format('Y'), InstalledVersions::getRootPackage()['name']],
+            ['/**', ' */', ' * ', ' *', $year . '-{{year}}', '{{year}}', '{{package}}'],
+            ['', '', '', '', $year, $year, InstalledVersions::getRootPackage()['name']],
             $this->header,
         );
 

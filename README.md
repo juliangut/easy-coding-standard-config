@@ -24,7 +24,7 @@ Create `ecs.php` file at your project's root directory
 ```php
 <?php
 
-use Jgut\ECS\ConfigSet80;
+use Jgut\ECS\ConfigSet82;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 $header = <<<'HEADER'
@@ -43,16 +43,17 @@ return static function (ECSConfig $ecsConfig) use ($header): void {
         __DIR__ . '/tests',
     ]);
 
-    (new ConfigSet80())
+    (new ConfigSet82())
         ->configure($ecsConfig);
 };
 ```
 
 Use one of the provided configurations depending on the PHP version you want to support:
 
-* `Jgut\ECS\ConfigSet74`, PHP >= 7.4
-* `Jgut\ECS\ConfigSet80`, PHP >= 8.0
+* `Jgut\ECS\ConfigSet82`, PHP >= 8.2
 * `Jgut\ECS\ConfigSet81`, PHP >= 8.1
+* `Jgut\ECS\ConfigSet80`, PHP >= 8.0
+* `Jgut\ECS\ConfigSet74`, PHP >= 7.4
 
 ### Configurations
 
@@ -63,12 +64,12 @@ Provide a header string, it will be prepended to every file analysed by php-cs-f
 The string `{{year}}` will be replaced by the current year, and the string `{{package}}` will be replaced by your package name
 
 ```php
-(new ConfigSet80())
+(new ConfigSet82())
     ->setHeader(<<<'HEADER'
-(c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
+    (c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
 
-This file is part of package {{package}}
-HEADER);
+    This file is part of package {{package}}
+    HEADER);
 ```
 
 ```diff
@@ -77,7 +78,35 @@ HEADER);
  <?php
 
 +/*
-+ * (c) 2021-2022 Julián Gutiérrez <juliangut@gmail.com>
++ * (c) 2021-2023 Julián Gutiérrez <juliangut@gmail.com>
++ *
++ * This file is part of package juliangut/php-cs-fixer-config
++ */
++
+ declare(strict_types=1);
+
+ namespace App;
+```
+
+If `{{year}}` is preceded by current year it will be combined into a single date
+
+```php
+// Assuming current year is 2023
+(new ConfigSet82())
+    ->setHeader(<<<'HEADER'
+    (c) 2023-{{year}} Julián Gutiérrez <juliangut@gmail.com>
+
+    This file is part of package {{package}}
+    HEADER);
+```
+
+```diff
+--- Original
++++ New
+ <?php
+
++/*
++ * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
 + *
 + * This file is part of package juliangut/php-cs-fixer-config
 + */
@@ -92,7 +121,7 @@ HEADER);
 If you work with PHPUnit
 
 ```php
-(new ConfigSet80())
+(new ConfigSet82())
     ->enablePhpUnitRules();
 ```
 
@@ -101,7 +130,7 @@ If you work with PHPUnit
 If you work with Doctrine
 
 ```php
-(new ConfigSet80())
+(new ConfigSet82())
     ->enableDoctrineRules();
 ```
 
@@ -112,7 +141,7 @@ If you're in the middle of "type hinting everything", try enabling type inferenc
 Be aware __these rules are experimental__ and will need human supervision after fixing, so you are advised NOT to permanently enable type inference
 
 ```php
-(new ConfigSet80())
+(new ConfigSet82())
     ->enableTypeInferRules();
 ```
 
@@ -178,7 +207,7 @@ If you need to add a few additional rules, this rules can be new or override rul
 It is preferred to identify fixers by their class name, anyway using fixer names will work as well
 
 ```php
-(new ConfigSet80())
+(new ConfigSet82())
     ->setAdditionalRules([
         SingleLineThrowFixer::class => true,
     ]);
@@ -189,10 +218,10 @@ It is preferred to identify fixers by their class name, anyway using fixer names
 If you need more control over applied rules or prefer a cleaner setup, you can easily create your custom fixer config instead of setting additional rules
 
 ```php
-use Jgut\ECS\ConfigSet81;
+use Jgut\ECS\ConfigSet82;
 use PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer;
 
-class CustomConfigSet extends ConfigSet81
+class CustomConfigSet extends ConfigSet82
 {
     protected function getRules(): array
     {
