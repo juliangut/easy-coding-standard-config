@@ -10,6 +10,7 @@ parameters:
   parallel:
     maximumNumberOfProcesses: 7
   paths:
+    - ecs.php
     - src
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src

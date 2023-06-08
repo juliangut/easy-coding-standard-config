@@ -38,7 +38,7 @@ qa-phpmnd:
 
 .PHONY: qa-compatibility
 qa-compatibility:
-	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.1- src
+	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.2- src
 
 .PHONY: qa-phpstan
 qa-phpstan:
