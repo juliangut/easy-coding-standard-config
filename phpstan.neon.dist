@@ -27,6 +27,8 @@ parameters:
         - src/ConfigSet81.php
     - message: '#^Parameter \$ecsConfig of method Jgut\\ECS\\Config\\AbstractConfigSet::configure\(\) has invalid type Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
       path: src/AbstractConfigSet.php
+    - message: '#^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\.#'
+      path: src/AbstractConfigSet.php
     - message: '#^Call to method .+\(\) on an unknown class Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
       path: src/AbstractConfigSet.php
     - message: '#^Access to constant PSR_12 on an unknown class Symplify\\EasyCodingStandard\\ValueObject\\Set\\SetList\.$#'
