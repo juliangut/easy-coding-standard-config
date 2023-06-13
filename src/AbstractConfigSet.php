@@ -310,6 +310,7 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 /**
  * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
  * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ * @phpstan-type ECSRuleClass class-string<Sniff|FixerInterface>
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -325,12 +326,12 @@ abstract class AbstractConfigSet
     private bool $typeInfer = false;
 
     /**
-     * @var array<class-string<Sniff|FixerInterface>, bool|array<string, mixed>>
+     * @var array<ECSRuleClass, bool|array<string, mixed>>
      */
     private array $additionalRules = [];
 
     /**
-     * @var array<class-string<Sniff|FixerInterface>|int<0, max>, string|list<string>|null>
+     * @var array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
      */
     private array $additionalSkips = [];
 
@@ -353,7 +354,7 @@ abstract class AbstractConfigSet
 
         $ecsConfig->sets([SetList::PSR_12]);
 
-        /** @var array<class-string<Sniff|FixerInterface>, bool|array<string, mixed>> $rules */
+        /** @var array<ECSRuleClass, bool|array<string, mixed>> $rules */
         $rules = array_merge(
             $this->getRules(),
             $this->additionalRules,
@@ -370,7 +371,7 @@ abstract class AbstractConfigSet
 
         /** @var array<class-string<Sniff>> $reportSniffs */
         $reportSniffs = [];
-        /** @var list<string> $skipRules */
+        /** @var list<ECSRuleClass> $skipRules */
         $skipRules = [];
 
         foreach ($rules as $rule => $config) {
@@ -402,7 +403,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return array<class-string<Sniff|FixerInterface>, array<string, mixed>|bool>
+     * @return array<ECSRuleClass, bool|array<string, mixed>>
      */
     protected function getRules(): array
     {
@@ -1157,7 +1158,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return array<class-string<Sniff|FixerInterface>|int<0, max>, string|list<string>|null>
+     * @return array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
      */
     protected function getSkips(): array
     {
@@ -1165,7 +1166,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @param array<class-string<Sniff|FixerInterface>, bool|array<string, mixed>> $additionalRules
+     * @param array<ECSRuleClass, bool|array<string, mixed>> $additionalRules
      */
     final public function setAdditionalRules(array $additionalRules): self
     {
@@ -1175,7 +1176,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @param array<class-string<Sniff|FixerInterface>|int<0, max>, string|list<string>|null> $additionalSkips
+     * @param array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null> $additionalSkips
      */
     public function setAdditionalSkips(array $additionalSkips): self
     {
