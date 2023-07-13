@@ -9,11 +9,9 @@
 
 declare(strict_types=1);
 
-use Jgut\ECS\Config\ConfigSet74;
 use Jgut\ECS\Config\ConfigSet80;
 use Jgut\ECS\Config\ConfigSet81;
 use Jgut\ECS\Config\ConfigSet82;
-use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
@@ -33,19 +31,11 @@ return static function (ECSConfig $ecsConfig): void {
         $configSet = new ConfigSet82();
     } elseif (\PHP_VERSION_ID >= 80_100) {
         $configSet = new ConfigSet81();
-    } elseif (\PHP_VERSION_ID >= 80_000) {
-        $configSet = new ConfigSet80();
     } else {
-        $configSet = new ConfigSet74();
+        $configSet = new ConfigSet80();
     }
 
     $configSet
         ->setHeader($header)
-        ->setAdditionalRules([
-            TrailingCommaInMultilineFixer::class => [ // Temporal while supporting PHP 7.4
-                'elements' => ['arrays', 'arguments'],
-                'after_heredoc' => true,
-            ],
-        ])
         ->configure($ecsConfig);
 };

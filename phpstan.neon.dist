@@ -1,12 +1,8 @@
 includes:
-  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - %rootDir%/../../juliangut/phpstan-config/phpstan.neon
 
 parameters:
   level: max
-  reportUnmatchedIgnoredErrors: false
-  checkMissingCallableSignature: true
-  tipsOfTheDay: false
-  errorFormat: compact
   parallel:
     maximumNumberOfProcesses: 7
   paths:
@@ -14,42 +10,10 @@ parameters:
     - src
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
+  typeAliases:
+    ECSRuleClass: 'class-string<\PHP_CodeSniffer\Sniffs\Sniff|\PhpCsFixer\Fixer\FixerInterface>'
+    PhpCsFixerRuleList: 'array<class-string<\PhpCsFixer\Fixer\FixerInterface>, array<string, mixed>|bool>'
+    PhpCodeSnifferRuleList: 'array<class-string<\PHP_CodeSniffer\Sniffs\Sniff>, array<string, mixed>|bool>'
   ignoreErrors:
-    - message: '#^Method Jgut\\ECS\\Config\\(Abstract)?ConfigSet(\d{2})?::get.+FixerRules\(\) should return array<class-string<PhpCsFixer\\Fixer\\FixerInterface>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
-      paths:
-        - src/AbstractConfigSet.php
-        - src/ConfigSet80.php
-        - src/ConfigSet81.php
-    - message: '#^Method Jgut\\ECS\\Config\\(Abstract)?ConfigSet(\d{2})?::get.+SnifferRules\(\) should return array<class-string<PHP_CodeSniffer\\Sniffs\\Sniff>, array<string, mixed>\|bool> but returns array<string, .+>\.$#'
-      paths:
-        - src/AbstractConfigSet.php
-        - src/ConfigSet80.php
-        - src/ConfigSet81.php
-    - message: '#^Parameter \$ecsConfig of method Jgut\\ECS\\Config\\AbstractConfigSet::configure\(\) has invalid type Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
-      path: src/AbstractConfigSet.php
     - message: '#^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\.#'
       path: src/AbstractConfigSet.php
-    - message: '#^Call to method .+\(\) on an unknown class Symplify\\EasyCodingStandard\\Config\\ECSConfig\.$#'
-      path: src/AbstractConfigSet.php
-    - message: '#^Access to constant PSR_12 on an unknown class Symplify\\EasyCodingStandard\\ValueObject\\Set\\SetList\.$#'
-      path: src/AbstractConfigSet.php
-    # Depending on the versions installed some classes may be deprecated
-    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\ArrayNotation\\NoTrailingCommaInSinglelineArrayFixer\.$#'
-      path: src/AbstractConfigSet.php
-    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\FunctionNotation\\NoTrailingCommaInSinglelineFunctionCallFixer\.$#'
-      path: src/AbstractConfigSet.php
-    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Basic\\BracesFixer\.$#'
-      path: src/AbstractConfigSet.php
-    - message: '#^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\LanguageConstruct\\SingleSpaceAfterConstructFixer\.$#'
-      path: src/AbstractConfigSet.php
-    # Depending on the versions installed some classes may not exist
-    - message: '#^Class .+Fixer not found\.$#'
-      paths:
-        - src/AbstractConfigSet.php
-        - src/ConfigSet80.php
-        - src/ConfigSet81.php
-    - message: '#^Class .+Sniff not found\.$#'
-      paths:
-        - src/AbstractConfigSet.php
-        - src/ConfigSet80.php
-        - src/ConfigSet81.php
