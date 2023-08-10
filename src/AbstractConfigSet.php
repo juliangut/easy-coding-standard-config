@@ -108,7 +108,6 @@ use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer;
-use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer;
 use PhpCsFixer\Fixer\FunctionNotation\DateTimeCreateFromFormatCallFixer;
 use PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer;
@@ -199,8 +198,8 @@ use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer;
@@ -652,7 +651,7 @@ abstract class AbstractConfigSet
             ],
             NormalizeIndexBraceFixer::class => true,
             NullableTypeDeclarationFixer::class => [
-                'syntax' => 'question_mark'
+                'syntax' => 'question_mark',
             ],
             NullableTypeDeclarationForDefaultNullValueFixer::class => [
                 'use_nullable_type_declaration' => true,
@@ -724,7 +723,7 @@ abstract class AbstractConfigSet
             ],
             PhpdocTrimConsecutiveBlankLineSeparationFixer::class => true,
             PhpdocTrimFixer::class => true,
-            PhpdocParamOrderFixer::class => true,
+            PhpdocParamOrderFixer::class => false,
             PhpdocTypesFixer::class => true,
             PhpdocTypesOrderFixer::class => [
                 'sort_algorithm' => 'none',
