@@ -1,5 +1,7 @@
 default: lint
 
+PHP_VERSION = $(shell php -v | awk '/^PHP / { print $$2 }' | awk -F. 'OFS="." { print $$1, $$2 }')
+
 
 .PHONY: lint-php
 lint-php:
@@ -42,7 +44,7 @@ qa-compatibility:
 
 .PHONY: qa-phpstan
 qa-phpstan:
-	vendor/bin/phpstan analyse --memory-limit=2G --no-progress
+	vendor/bin/phpstan analyse --configuration=phpstan-$(PHP_VERSION).neon.dist --memory-limit=2G --no-progress
 
 .PHONY: qa
 qa:

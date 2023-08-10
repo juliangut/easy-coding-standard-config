@@ -267,6 +267,7 @@ use PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocTypesTrimFixer;
 use PhpCsFixerCustomFixers\Fixer\PromotedConstructorPropertyFixer;
 use PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer;
+use ReflectionClass;
 use RuntimeException;
 use SlevomatCodingStandard\Sniffs\Arrays\ArrayAccessSniff;
 use SlevomatCodingStandard\Sniffs\Arrays\DisallowImplicitArrayCreationSniff;
@@ -314,11 +315,11 @@ use SlevomatCodingStandard\Sniffs\Variables\DisallowVariableVariableSniff;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
-use Symplify\CodingStandard\Fixer\LineLength\DocBlockLineLengthFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
+use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 /**
@@ -400,7 +401,10 @@ abstract class AbstractConfigSet
             }
         }
 
-        $ecsConfig->reportSniffClassWarnings($reportSniffs);
+        $optionReflection = new ReflectionClass(Option::class);
+        if ($optionReflection->hasConstant('REPORT_SNIFF_WARNINGS')) {
+            $ecsConfig->reportSniffClassWarnings($reportSniffs);
+        }
 
         $skipRules = array_merge(
             $skipRules,
@@ -959,7 +963,6 @@ abstract class AbstractConfigSet
     private function getSymplifyFixerRules(): array
     {
         return [
-            DocBlockLineLengthFixer::class => true,
             LineLengthFixer::class => [
                 'inline_short_lines' => false,
             ],
