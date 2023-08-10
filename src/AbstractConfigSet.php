@@ -59,6 +59,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
+use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
@@ -199,6 +200,7 @@ use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitExpectationFixer;
@@ -782,6 +784,7 @@ abstract class AbstractConfigSet
             WhitespaceAfterCommaInArrayFixer::class => [
                 'ensure_single_space' => true,
             ],
+            YieldFromArrayToYieldsFixer::class => true,
             YodaStyleFixer::class => [
                 'equal' => false,
                 'identical' => false,
@@ -798,6 +801,7 @@ abstract class AbstractConfigSet
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
                     PhpUnitDataProviderNameFixer::class => true,
+                    PhpUnitDataProviderReturnTypeFixer::class => true,
                     PhpUnitDataProviderStaticFixer::class => true,
                     PhpUnitDedicateAssertFixer::class => [
                         'target' => '5.6',
