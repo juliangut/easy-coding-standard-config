@@ -20,10 +20,8 @@ use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsFunctionNameSniff;
 use JgutCodingStandard\Sniffs\NamingConventions\CamelCapsVariableNameSniff;
 use Lcobucci\Clock\SystemClock;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
-use PedroTroller\CS\Fixer\CodingStyle\ForbiddenFunctionsFixer;
 use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
@@ -37,11 +35,12 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\NestingLevelSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowRequestSuperglobalSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\NoSilencedErrorsSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Strings\UnnecessaryStringConcatSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\VersionControl\GitMergeConflictSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentThrowTagSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff;
-use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\EvalSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MemberVarScopeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\StaticThisUsageSniff;
 use PhpCsFixer\Fixer\Alias\ArrayPushFixer;
@@ -63,6 +62,7 @@ use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
+use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
 use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
@@ -154,7 +154,6 @@ use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
 use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer;
 use PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer;
-use PhpCsFixer\Fixer\Operator\NoUselessConcatOperatorFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer;
 use PhpCsFixer\Fixer\Operator\OperatorLinebreakFixer;
@@ -252,7 +251,6 @@ use PhpCsFixerCustomFixers\Fixer\NoDuplicatedArrayKeyFixer;
 use PhpCsFixerCustomFixers\Fixer\NoLeadingSlashInGlobalNamespaceFixer;
 use PhpCsFixerCustomFixers\Fixer\NoNullableBooleanTypeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoPhpStormGeneratedCommentFixer;
-use PhpCsFixerCustomFixers\Fixer\NoSuperfluousConcatenationFixer;
 use PhpCsFixerCustomFixers\Fixer\NoTrailingCommaInSinglelineFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
@@ -267,18 +265,19 @@ use PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocTypesTrimFixer;
 use PhpCsFixerCustomFixers\Fixer\PromotedConstructorPropertyFixer;
 use PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer;
-use ReflectionClass;
 use RuntimeException;
 use SlevomatCodingStandard\Sniffs\Arrays\ArrayAccessSniff;
 use SlevomatCodingStandard\Sniffs\Arrays\DisallowImplicitArrayCreationSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\AttributeAndTargetSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\DisallowAttributesJoiningSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\RequireAttributeAfterDocCommentSniff;
+use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowLateStaticBindingForConstantsSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiConstantDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
+use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\RequireConstructorPropertyPromotionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\AnnotationNameSniff;
@@ -319,7 +318,6 @@ use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 /**
@@ -380,8 +378,6 @@ abstract class AbstractConfigSet
             ];
         }
 
-        /** @var array<class-string<Sniff>> $reportSniffs */
-        $reportSniffs = [];
         /** @var list<ECSRuleClass> $skipRules */
         $skipRules = [];
 
@@ -392,18 +388,9 @@ abstract class AbstractConfigSet
                 } else {
                     $ecsConfig->ruleWithConfiguration($rule, $config);
                 }
-
-                if (is_a($rule, Sniff::class, true)) {
-                    $reportSniffs[] = $rule;
-                }
             } else {
                 $skipRules[] = $rule;
             }
-        }
-
-        $optionReflection = new ReflectionClass(Option::class);
-        if ($optionReflection->hasConstant('REPORT_SNIFF_WARNINGS')) {
-            $ecsConfig->reportSniffClassWarnings($reportSniffs);
         }
 
         $skipRules = array_merge(
@@ -466,6 +453,7 @@ abstract class AbstractConfigSet
                     'const' => 'none',
                     'property' => 'one',
                     'method' => 'one',
+                    'case' => 'one',
                 ],
             ],
             ClassReferenceNameCasingFixer::class => true,
@@ -641,7 +629,6 @@ abstract class AbstractConfigSet
             NoUnsetCastFixer::class => true,
             NoUnsetOnPropertyFixer::class => true,
             NoUnusedImportsFixer::class => true,
-            NoUselessConcatOperatorFixer::class => true,
             NoUselessElseFixer::class => true,
             NoUselessNullsafeOperatorFixer::class => true,
             NoUselessReturnFixer::class => true,
@@ -661,6 +648,7 @@ abstract class AbstractConfigSet
                 'use_nullable_type_declaration' => true,
             ],
             ObjectOperatorWithoutWhitespaceFixer::class => true,
+            OctalNotationFixer::class => true,
             OperatorLinebreakFixer::class => [
                 'position' => 'beginning',
                 'only_booleans' => false,
@@ -727,7 +715,7 @@ abstract class AbstractConfigSet
             ],
             PhpdocTrimConsecutiveBlankLineSeparationFixer::class => true,
             PhpdocTrimFixer::class => true,
-            PhpdocParamOrderFixer::class => false,
+            PhpdocParamOrderFixer::class => true,
             PhpdocTypesFixer::class => true,
             PhpdocTypesOrderFixer::class => [
                 'sort_algorithm' => 'none',
@@ -903,9 +891,6 @@ abstract class AbstractConfigSet
             NoLeadingSlashInGlobalNamespaceFixer::class => true,
             NoNullableBooleanTypeFixer::class => true,
             NoPhpStormGeneratedCommentFixer::class => true,
-            NoSuperfluousConcatenationFixer::class => [
-                'allow_preventing_trailing_spaces' => true,
-            ],
             NoTrailingCommaInSinglelineFixer::class => true,
             NoUselessCommentFixer::class => true,
             NoUselessDirnameCallFixer::class => true,
@@ -947,9 +932,6 @@ abstract class AbstractConfigSet
         return [
             CommentLineToPhpdocBlockFixer::class => true,
             ExceptionsPunctuationFixer::class => true,
-            ForbiddenFunctionsFixer::class => [
-                'functions' => ['sizeof', 'var_dump', 'die'],
-            ],
             LineBreakBetweenMethodArgumentsFixer::class => [
                 'max-args' => false,
                 'automatic-argument-merge' => false,
@@ -964,6 +946,7 @@ abstract class AbstractConfigSet
     {
         return [
             LineLengthFixer::class => [
+                'lineLength' => 120,
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
@@ -997,26 +980,40 @@ abstract class AbstractConfigSet
             ],
             DeprecatedFunctionsSniff::class => true,
             DisallowRequestSuperglobalSniff::class => true,
-            EvalSniff::class => true,
             FixmeSniff::class => true,
             ForLoopWithTestFunctionCallSniff::class => true,
+            ForbiddenFunctionsSniff::class => [
+                'forbiddenFunctions' => [
+                    'sizeof' => 'count',
+                    'eval' => null,
+                    'var_dump' => null,
+                    'die' => null,
+                ],
+            ],
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
             LineLengthSniff::class => [
                 'lineLimit' => 120,
-                'absoluteLineLimit' => 0,
+                'absoluteLineLimit' => 120,
+                'ignoreComments' => true,
             ],
             JumbledIncrementerSniff::class => true,
             MemberVarScopeSniff::class => true,
             NestingLevelSniff::class => [
+                'nestingLevel' => 3,
                 'absoluteNestingLevel' => 3,
             ],
-            NoSilencedErrorsSniff::class => true,
+            NoSilencedErrorsSniff::class => [
+                'error' => true,
+            ],
             OneObjectStructurePerFileSniff::class => true,
             StaticThisUsageSniff::class => true,
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
             UnnecessaryFinalModifierSniff::class => true,
+            UnnecessaryStringConcatSniff::class => [
+                'allowMultiline' => true,
+            ],
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
@@ -1034,6 +1031,10 @@ abstract class AbstractConfigSet
                 'ignoreAssignmentsInsideFunctionCalls' => true,
             ],
             AttributeAndTargetSpacingSniff::class => true,
+            BackedEnumTypeSpacingSniff::class => [
+                'spacesCountBeforeColon' => 0,
+                'spacesCountBeforeType' => 1,
+            ],
             ClassConstantVisibilitySniff::class => true,
             DeadCatchSniff::class => true,
             DisallowAttributesJoiningSniff::class => true,
@@ -1048,6 +1049,12 @@ abstract class AbstractConfigSet
             DisallowVariableParsingSniff::class => true,
             DisallowVariableVariableSniff::class => true,
             EmptyCommentSniff::class => true,
+            EnumCaseSpacingSniff::class => [
+                'minLinesCountBeforeWithComment' => 1,
+                'maxLinesCountBeforeWithComment' => 1,
+                'minLinesCountBeforeWithoutComment' => 1,
+                'maxLinesCountBeforeWithoutComment' => 1,
+            ],
             ReferenceSpacingSniff::class => true,
             ReferenceThrowableOnlySniff::class => true,
             RequireAttributeAfterDocCommentSniff::class => true,
