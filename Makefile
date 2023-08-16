@@ -23,10 +23,6 @@ fix:
 	make --no-print-directory fix-ecs
 
 
-.PHONY: qa-phpcpd
-qa-phpcpd:
-	vendor/bin/phpcpd src
-
 .PHONY: qa-phpmd
 qa-phpmd:
 	vendor/bin/phpmd src ansi unusedcode,naming,design,controversial,codesize
@@ -41,11 +37,10 @@ qa-compatibility:
 
 .PHONY: qa-phpstan
 qa-phpstan:
-	vendor/bin/phpstan analyse --memory-limit=2G --no-progress
+	vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --memory-limit=2G --no-progress
 
 .PHONY: qa
 qa:
-	make --no-print-directory qa-phpcpd && \
 	make --no-print-directory qa-phpmd && \
 	make --no-print-directory qa-phpmnd && \
 	make --no-print-directory qa-compatibility && \
