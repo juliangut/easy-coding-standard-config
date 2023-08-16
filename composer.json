@@ -43,10 +43,7 @@
     "autoload": {
         "psr-4": {
             "Jgut\\ECS\\Config\\": "src/"
-        },
-        "files": [
-            "bootstrap.php"
-        ]
+        }
     },
     "autoload-dev": {
     },
