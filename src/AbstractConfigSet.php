@@ -56,6 +56,7 @@ use PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer;
 use PhpCsFixer\Fixer\Alias\SetTypeToCastFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
+use PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer;
 use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
@@ -153,6 +154,7 @@ use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Fixer\Operator\ConcatSpaceFixer;
 use PhpCsFixer\Fixer\Operator\IncrementStyleFixer;
 use PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer;
+use PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer;
 use PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer;
 use PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer;
 use PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer;
@@ -238,6 +240,7 @@ use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
 use PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer;
 use PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer;
+use PhpCsFixer\Fixer\Whitespace\SpacesInsideParenthesesFixer;
 use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
@@ -539,6 +542,7 @@ abstract class AbstractConfigSet
             ],
             LinebreakAfterOpeningTagFixer::class => true,
             LogicalOperatorsFixer::class => true,
+            LongToShorthandOperatorFixer::class => true,
             MagicConstantCasingFixer::class => true,
             MagicMethodCasingFixer::class => true,
             MbStrFunctionsFixer::class => true,
@@ -728,6 +732,7 @@ abstract class AbstractConfigSet
             RandomApiMigrationFixer::class => true,
             RegularCallableCallFixer::class => true,
             ReturnAssignmentFixer::class => true,
+            ReturnToYieldFromFixer::class => true,
             SelfAccessorFixer::class => true,
             SelfStaticAccessorFixer::class => true,
             SemicolonAfterInstructionFixer::class => true,
@@ -748,6 +753,7 @@ abstract class AbstractConfigSet
             SpaceAfterSemicolonFixer::class => [
                 'remove_in_empty_for_expressions' => false,
             ],
+            SpacesInsideParenthesesFixer::class => true,
             StandardizeIncrementFixer::class => true,
             StandardizeNotEqualsFixer::class => true,
             StatementIndentationFixer::class => true,
