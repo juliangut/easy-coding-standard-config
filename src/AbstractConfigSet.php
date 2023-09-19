@@ -77,6 +77,7 @@ use PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer;
 use PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer;
 use PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
+use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer;
@@ -458,6 +459,9 @@ abstract class AbstractConfigSet
                     'method' => 'one',
                     'case' => 'one',
                 ],
+            ],
+            ClassDefinitionFixer::class => [
+                'space_before_parenthesis' => true,
             ],
             ClassReferenceNameCasingFixer::class => true,
             CleanNamespaceFixer::class => true,
