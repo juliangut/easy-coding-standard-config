@@ -33,7 +33,7 @@
         "symplify/easy-coding-standard": "^12.0"
     },
     "require-dev": {
-        "juliangut/phpstan-config": "dev-master",
+        "juliangut/phpstan-config": "^1.0",
         "overtrue/phplint": "^5.0|^6.0",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpmd/phpmd": "^2.13",
