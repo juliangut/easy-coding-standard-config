@@ -802,7 +802,6 @@ abstract class AbstractConfigSet
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
                     PhpUnitDataProviderNameFixer::class => true,
-                    PhpUnitDataProviderReturnTypeFixer::class => true,
                     PhpUnitDataProviderStaticFixer::class => true,
                     PhpUnitDedicateAssertFixer::class => [
                         'target' => '5.6',
@@ -851,6 +850,10 @@ abstract class AbstractConfigSet
                     // PhpUnitTestClassRequiresCoversFixer::class => true,
                 ],
             );
+
+            if (\PHP_VERSION >= 80_100) {
+                $rules[PhpUnitDataProviderReturnTypeFixer::class] = true;
+            }
         }
 
         if ($this->doctrine) {
