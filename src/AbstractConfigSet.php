@@ -801,7 +801,6 @@ abstract class AbstractConfigSet
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
-                    PhpUnitDataProviderNameFixer::class => true,
                     PhpUnitDataProviderStaticFixer::class => true,
                     PhpUnitDedicateAssertFixer::class => [
                         'target' => '5.6',
@@ -852,6 +851,7 @@ abstract class AbstractConfigSet
             );
 
             if (\PHP_VERSION >= 80_100) {
+                $rules[PhpUnitDataProviderNameFixer::class] = true;
                 $rules[PhpUnitDataProviderReturnTypeFixer::class] = true;
             }
         }
