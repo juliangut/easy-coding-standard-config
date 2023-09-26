@@ -11,10 +11,52 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
+use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
+use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
+use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
+
 class ConfigSet81 extends AbstractConfigSet
 {
     protected function getRequiredPhpVersion(): string
     {
         return '8.1.0';
+    }
+
+    protected function getRules(): array
+    {
+        return array_merge(
+            parent::getRules(),
+            $this->getPhpCsFixerRules(),
+            $this->getSlevomatSnifferRules(),
+        );
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getPhpCsFixerRules(): array
+    {
+        return [
+            OctalNotationFixer::class => true,
+        ];
+    }
+
+    /**
+     * @return PhpCodeSnifferRuleList
+     */
+    private function getSlevomatSnifferRules(): array
+    {
+        return [
+            BackedEnumTypeSpacingSniff::class => [
+                'spacesCountBeforeColon' => 0,
+                'spacesCountBeforeType' => 1,
+            ],
+            EnumCaseSpacingSniff::class => [
+                'minLinesCountBeforeWithComment' => 1,
+                'maxLinesCountBeforeWithComment' => 1,
+                'minLinesCountBeforeWithoutComment' => 1,
+                'maxLinesCountBeforeWithoutComment' => 1,
+            ],
+        ];
     }
 }

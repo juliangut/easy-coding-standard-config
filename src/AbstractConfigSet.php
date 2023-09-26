@@ -63,7 +63,6 @@ use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
-use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
 use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
@@ -275,13 +274,11 @@ use SlevomatCodingStandard\Sniffs\Arrays\DisallowImplicitArrayCreationSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\AttributeAndTargetSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\DisallowAttributesJoiningSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\RequireAttributeAfterDocCommentSniff;
-use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowLateStaticBindingForConstantsSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiConstantDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
-use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\RequireConstructorPropertyPromotionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\AnnotationNameSniff;
@@ -461,6 +458,7 @@ abstract class AbstractConfigSet
                 ],
             ],
             ClassDefinitionFixer::class => [
+                'inline_constructor_arguments' => false,
                 'space_before_parenthesis' => true,
             ],
             ClassReferenceNameCasingFixer::class => true,
@@ -656,7 +654,6 @@ abstract class AbstractConfigSet
                 'use_nullable_type_declaration' => true,
             ],
             ObjectOperatorWithoutWhitespaceFixer::class => true,
-            OctalNotationFixer::class => true,
             OperatorLinebreakFixer::class => [
                 'position' => 'beginning',
                 'only_booleans' => false,
@@ -723,7 +720,6 @@ abstract class AbstractConfigSet
             ],
             PhpdocTrimConsecutiveBlankLineSeparationFixer::class => true,
             PhpdocTrimFixer::class => true,
-            PhpdocParamOrderFixer::class => true,
             PhpdocTypesFixer::class => true,
             PhpdocTypesOrderFixer::class => [
                 'sort_algorithm' => 'none',
@@ -793,6 +789,10 @@ abstract class AbstractConfigSet
                 'always_move_variable' => false,
             ],
         ];
+
+        if (\PHP_VERSION_ID >= 80_100) {
+            $rules[PhpdocParamOrderFixer::class] = true;
+        }
 
         if ($this->phpUnit) {
             $rules = array_merge(
@@ -1041,10 +1041,6 @@ abstract class AbstractConfigSet
                 'ignoreAssignmentsInsideFunctionCalls' => true,
             ],
             AttributeAndTargetSpacingSniff::class => true,
-            BackedEnumTypeSpacingSniff::class => [
-                'spacesCountBeforeColon' => 0,
-                'spacesCountBeforeType' => 1,
-            ],
             ClassConstantVisibilitySniff::class => true,
             DeadCatchSniff::class => true,
             DisallowAttributesJoiningSniff::class => true,
@@ -1059,12 +1055,6 @@ abstract class AbstractConfigSet
             DisallowVariableParsingSniff::class => true,
             DisallowVariableVariableSniff::class => true,
             EmptyCommentSniff::class => true,
-            EnumCaseSpacingSniff::class => [
-                'minLinesCountBeforeWithComment' => 1,
-                'maxLinesCountBeforeWithComment' => 1,
-                'minLinesCountBeforeWithoutComment' => 1,
-                'maxLinesCountBeforeWithoutComment' => 1,
-            ],
             ReferenceSpacingSniff::class => true,
             ReferenceThrowableOnlySniff::class => true,
             RequireAttributeAfterDocCommentSniff::class => true,

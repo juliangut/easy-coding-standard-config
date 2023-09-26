@@ -9,8 +9,7 @@
 
 declare(strict_types=1);
 
-use Jgut\ECS\Config\ConfigSet81;
-use Jgut\ECS\Config\ConfigSet82;
+use Jgut\ECS\Config\ConfigSet80;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
@@ -26,13 +25,7 @@ return static function (ECSConfig $ecsConfig): void {
         __DIR__ . '/src',
     ]);
 
-    if (\PHP_VERSION_ID >= 80_200) {
-        $configSet = new ConfigSet82();
-    } else {
-        $configSet = new ConfigSet81();
-    }
-
-    $configSet
+    (new ConfigSet80())
         ->setHeader($header)
         ->configure($ecsConfig);
 };
