@@ -60,6 +60,7 @@ use PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer;
 use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
+use PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer;
 use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
@@ -439,6 +440,7 @@ abstract class AbstractConfigSet
             ArrayPushFixer::class => true,
             AssignNullCoalescingToCoalesceEqualFixer::class => true,
             BacktickToShellExecFixer::class => true,
+            AttributeEmptyParenthesesFixer::class => true,
             BinaryOperatorSpacesFixer::class => [
                 'default' => 'single_space',
             ],
