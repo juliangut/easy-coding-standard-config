@@ -1,4 +1,4 @@
-[![PHP version](https://img.shields.io/badge/PHP-%3E%3D8.1-8892BF.svg?style=flat-square)](http://php.net)
+[![PHP version](https://img.shields.io/badge/PHP-%3E%3D8.0-8892BF.svg?style=flat-square)](http://php.net)
 [![Latest Version](https://img.shields.io/packagist/v/juliangut/easy-coding-standard-config.svg?style=flat-square)](https://packagist.org/packages/juliangut/easy-coding-standard-config)
 [![License](https://img.shields.io/github/license/juliangut/easy-coding-standard-config.svg?style=flat-square)](https://github.com/juliangut/easy-coding-standard-config/blob/master/LICENSE)
 
