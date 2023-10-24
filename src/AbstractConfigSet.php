@@ -61,7 +61,7 @@ use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer;
-use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
+use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
@@ -71,7 +71,7 @@ use PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer;
 use PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer;
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer;
-use PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer;
+use PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer;
 use PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer;
@@ -99,8 +99,8 @@ use PhpCsFixer\Fixer\ControlStructure\EmptyLoopBodyFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\ControlStructure\NoAlternativeSyntaxFixer;
 use PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer;
+use PhpCsFixer\Fixer\ControlStructure\NoUnneededBracesFixer;
 use PhpCsFixer\Fixer\ControlStructure\NoUnneededControlParenthesesFixer;
-use PhpCsFixer\Fixer\ControlStructure\NoUnneededCurlyBracesFixer;
 use PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer;
 use PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer;
 use PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer;
@@ -297,6 +297,7 @@ use SlevomatCodingStandard\Sniffs\ControlStructures\RequireShortTernaryOperatorS
 use SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\ReferenceThrowableOnlySniff;
 use SlevomatCodingStandard\Sniffs\Exceptions\RequireNonCapturingCatchSniff;
+use SlevomatCodingStandard\Sniffs\Functions\NamedArgumentSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Functions\RequireMultiLineCallSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UnusedInheritedVariablePassedToClosureSniff;
 use SlevomatCodingStandard\Sniffs\Functions\UselessParameterDefaultValueSniff;
@@ -447,6 +448,7 @@ abstract class AbstractConfigSet
             BlankLineBeforeStatementFixer::class => [
                 'statements' => ['case', 'continue', 'declare', 'default', 'return', 'throw', 'try'],
             ],
+            BracesPositionFixer::class => true,
             CastSpacesFixer::class => [
                 'space' => 'single',
             ],
@@ -473,7 +475,6 @@ abstract class AbstractConfigSet
             ],
             ControlStructureBracesFixer::class => true,
             ControlStructureContinuationPositionFixer::class => true,
-            CurlyBracesPositionFixer::class => true,
             DateTimeCreateFromFormatCallFixer::class => true,
             DateTimeImmutableFixer::class => true,
             DeclareParenthesesFixer::class => true,
@@ -552,6 +553,7 @@ abstract class AbstractConfigSet
             MbStrFunctionsFixer::class => true,
             MethodArgumentSpaceFixer::class => [
                 'after_heredoc' => true,
+                'attribute_placement' => 'standalone',
                 'keep_multiple_spaces_after_comma' => false,
                 'on_multiline' => 'ensure_fully_multiline',
             ],
@@ -574,7 +576,7 @@ abstract class AbstractConfigSet
                 'scope' => 'all',
                 'strict' => true,
             ],
-            NativeFunctionTypeDeclarationCasingFixer::class => true,
+            NativeTypeDeclarationCasingFixer::class => true,
             NoAliasFunctionsFixer::class => [
                 'sets' => ['@all'],
             ],
@@ -623,11 +625,11 @@ abstract class AbstractConfigSet
             ],
             NoTrailingCommaInSinglelineFixer::class => true,
             NoTrailingWhitespaceInStringFixer::class => true,
+            NoUnneededBracesFixer::class => [
+                'namespaces' => true,
+            ],
             NoUnneededControlParenthesesFixer::class => [
                 'statements' => ['break', 'clone', 'continue', 'echo_print', 'return', 'switch_case', 'yield'],
-            ],
-            NoUnneededCurlyBracesFixer::class => [
-                'namespaces' => true,
             ],
             NoUnneededFinalMethodFixer::class => [
                 'private_methods' => true,
@@ -1060,6 +1062,7 @@ abstract class AbstractConfigSet
             DisallowVariableParsingSniff::class => true,
             DisallowVariableVariableSniff::class => true,
             EmptyCommentSniff::class => true,
+            NamedArgumentSpacingSniff::class => true,
             ReferenceSpacingSniff::class => true,
             ReferenceThrowableOnlySniff::class => true,
             RequireAttributeAfterDocCommentSniff::class => true,
