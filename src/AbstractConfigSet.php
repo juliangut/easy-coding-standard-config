@@ -254,7 +254,6 @@ use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDuplicatedArrayKeyFixer;
 use PhpCsFixerCustomFixers\Fixer\NoLeadingSlashInGlobalNamespaceFixer;
 use PhpCsFixerCustomFixers\Fixer\NoNullableBooleanTypeFixer;
-use PhpCsFixerCustomFixers\Fixer\NoPhpStormGeneratedCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoTrailingCommaInSinglelineFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
@@ -314,6 +313,7 @@ use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UnionTypeHintFormatSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\DisallowVariableVariableSniff;
+use Symplify\CodingStandard\Fixer\Annotation\RemovePHPStormAnnotationFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
@@ -553,7 +553,7 @@ abstract class AbstractConfigSet
             MbStrFunctionsFixer::class => true,
             MethodArgumentSpaceFixer::class => [
                 'after_heredoc' => true,
-                'attribute_placement' => 'standalone',
+                // 'attribute_placement' => 'standalone', PHP-CS-Fixer 3.31
                 'keep_multiple_spaces_after_comma' => false,
                 'on_multiline' => 'ensure_fully_multiline',
             ],
@@ -907,7 +907,6 @@ abstract class AbstractConfigSet
             ],
             NoLeadingSlashInGlobalNamespaceFixer::class => true,
             NoNullableBooleanTypeFixer::class => true,
-            NoPhpStormGeneratedCommentFixer::class => true,
             NoTrailingCommaInSinglelineFixer::class => true,
             NoUselessCommentFixer::class => true,
             NoUselessDirnameCallFixer::class => true,
@@ -967,6 +966,7 @@ abstract class AbstractConfigSet
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
+            RemovePHPStormAnnotationFixer::class => true,
             ParamReturnAndVarTagMalformsFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
             StandaloneLineInMultilineArrayFixer::class => true,
