@@ -11,10 +11,32 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
+use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
+use PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer;
+
 class ConfigSet80 extends AbstractConfigSet
 {
     protected function getRequiredPhpVersion(): string
     {
         return '8.0.0';
+    }
+
+    protected function getRules(): array
+    {
+        return array_merge(
+            parent::getRules(),
+            $this->getPhpCsFixerRules(),
+        );
+    }
+
+    /**
+     * @return PhpCsFixerRuleList
+     */
+    private function getPhpCsFixerRules(): array
+    {
+        return [
+            CurlyBracesPositionFixer::class => true,
+            NativeFunctionTypeDeclarationCasingFixer::class => true,
+        ];
     }
 }

@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
+use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
+use PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
@@ -38,6 +40,8 @@ class ConfigSet81 extends AbstractConfigSet
     private function getPhpCsFixerRules(): array
     {
         return [
+            BracesPositionFixer::class => true,
+            NativeTypeDeclarationCasingFixer::class => true,
             OctalNotationFixer::class => true,
             PhpdocReadonlyClassCommentToKeywordFixer::class => true,
         ];

@@ -61,7 +61,6 @@ use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer;
-use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
@@ -71,7 +70,6 @@ use PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer;
 use PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer;
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer;
-use PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer;
 use PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer;
@@ -448,7 +446,6 @@ abstract class AbstractConfigSet
             BlankLineBeforeStatementFixer::class => [
                 'statements' => ['case', 'continue', 'declare', 'default', 'return', 'throw', 'try'],
             ],
-            BracesPositionFixer::class => true,
             CastSpacesFixer::class => [
                 'space' => 'single',
             ],
@@ -576,7 +573,6 @@ abstract class AbstractConfigSet
                 'scope' => 'all',
                 'strict' => true,
             ],
-            NativeTypeDeclarationCasingFixer::class => true,
             NoAliasFunctionsFixer::class => [
                 'sets' => ['@all'],
             ],

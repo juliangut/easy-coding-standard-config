@@ -15,5 +15,9 @@ parameters:
     PhpCsFixerRuleList: 'array<class-string<\PhpCsFixer\Fixer\FixerInterface>, array<string, mixed>|bool>'
     PhpCodeSnifferRuleList: 'array<class-string<\PHP_CodeSniffer\Sniffs\Sniff>, array<string, mixed>|bool>'
   ignoreErrors:
-    - message: '#^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\.#'
+    - message: '/^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\./'
       path: src/AbstractConfigSet.php
+    - messages:
+      - '/^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer\.$/'
+      - '/^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer:\nin favor of NativeTypeDeclarationCasingFixer$/'
+      path: src/ConfigSet80.php
