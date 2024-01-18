@@ -63,6 +63,7 @@ use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
+use PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
 use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
@@ -226,6 +227,7 @@ use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer;
+use PhpCsFixer\Fixer\StringNotation\MultilineStringToHeredocFixer;
 use PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer;
 use PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer;
 use PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer;
@@ -257,7 +259,6 @@ use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDoctrineRepositoryCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessParenthesisFixer;
-use PhpCsFixerCustomFixers\Fixer\NumericLiteralSeparatorFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocArrayStyleFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocNoSuperfluousParamFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocParamTypeFixer;
@@ -558,6 +559,7 @@ abstract class AbstractConfigSet
             ModernizeStrposFixer::class => true,
             ModernizeTypesCastingFixer::class => true,
             MultilineCommentOpeningClosingFixer::class => true,
+            MultilineStringToHeredocFixer::class => true,
             MultilineWhitespaceBeforeSemicolonsFixer::class => [
                 'strategy' => 'no_multi_line',
             ],
@@ -653,6 +655,7 @@ abstract class AbstractConfigSet
             NullableTypeDeclarationForDefaultNullValueFixer::class => [
                 'use_nullable_type_declaration' => true,
             ],
+            NumericLiteralSeparatorFixer::class => true,
             ObjectOperatorWithoutWhitespaceFixer::class => true,
             OperatorLinebreakFixer::class => [
                 'position' => 'beginning',
@@ -907,10 +910,6 @@ abstract class AbstractConfigSet
             NoUselessCommentFixer::class => true,
             NoUselessDirnameCallFixer::class => true,
             NoUselessParenthesisFixer::class => true,
-            NumericLiteralSeparatorFixer::class => [
-                'decimal' => true,
-                'float' => true,
-            ],
             PhpdocArrayStyleFixer::class => true,
             PhpdocNoSuperfluousParamFixer::class => true,
             PhpdocParamTypeFixer::class => true,
