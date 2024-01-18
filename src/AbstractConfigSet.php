@@ -1162,11 +1162,28 @@ abstract class AbstractConfigSet
         $year = SystemClock::fromSystemTimezone()->now()->format('Y');
         $header = str_replace(
             ['/**', ' */', ' * ', ' *', $year . '-{{year}}', '{{year}}', '{{package}}'],
-            ['', '', '', '', $year, $year, InstalledVersions::getRootPackage()['name']],
+            ['', '', '', '', $year, $year, $this->getRootPackage()],
             $this->header,
         );
 
         return trim($header) !== '' ? trim($header) : null;
+    }
+
+    private function getRootPackage(): string
+    {
+        $fileFound = false;
+        $dir = __DIR__;
+        while (!$fileFound && $dir !== '/') {
+            if (file_exists($dir . '/vendor/composer/InstalledVersions.php')) {
+                require_once $dir . '/vendor/composer/InstalledVersions.php';
+
+                $fileFound = true;
+            } else {
+                $dir = dirname($dir);
+            }
+        }
+
+        return InstalledVersions::getRootPackage()['name'];
     }
 
     final public function enablePhpUnitRules(bool $phpUnit = true): self
