@@ -1,7 +1,7 @@
 <?php
 
 /*
- * (c) 2021-2023 Julián Gutiérrez <juliangut@gmail.com>
+ * (c) 2021-2024 Julián Gutiérrez <juliangut@gmail.com>
  *
  * @license BSD-3-Clause
  * @link https://github.com/juliangut/easy-coding-standard-config
@@ -320,6 +320,8 @@ use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
+use Symplify\EasyCodingStandard\Configuration\ECSConfigBuilder;
+use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 /**
@@ -359,6 +361,47 @@ abstract class AbstractConfigSet
 
     abstract protected function getRequiredPhpVersion(): string;
 
+    final public function configureBuilder(?ECSConfigBuilder $builder = null): ECSConfigBuilder
+    {
+        $builder ??= ECSConfig::configure();
+
+        $builder
+            ->withSpacing(indentation: Option::INDENTATION_SPACES, lineEnding: \PHP_EOL)
+            ->withPreparedSets(psr12: true);
+
+        /** @var array<ECSRuleClass, bool|array<string, mixed>> $rules */
+        $rules = array_merge(
+            $this->getRules(),
+            $this->additionalRules,
+        );
+
+        /** @var list<ECSRuleClass> $includedRules */
+        $includedRules = [];
+        /** @var list<ECSRuleClass> $skippedRules */
+        $skippedRules = [];
+
+        foreach ($rules as $rule => $config) {
+            if (\is_array($config) || $config === true) {
+                if ($config === true) {
+                    $includedRules[] = $rule;
+                } else {
+                    $builder->withConfiguredRule($rule, $config);
+                }
+            } else {
+                $skippedRules[] = $rule;
+            }
+        }
+
+        $builder->withRules($includedRules);
+        $builder->withSkip(array_merge(
+            $skippedRules,
+            $this->getSkips(),
+            $this->additionalSkips,
+        ));
+
+        return $builder;
+    }
+
     final public function configure(ECSConfig $ecsConfig): self
     {
         $ecsConfig->lineEnding("\n");
@@ -370,15 +413,6 @@ abstract class AbstractConfigSet
             $this->getRules(),
             $this->additionalRules,
         );
-        $header = $this->getHeader();
-        if ($header !== null) {
-            $rules[HeaderCommentFixer::class] = [
-                'header' => $header,
-                'comment_type' => 'comment',
-                'location' => 'after_open',
-                'separate' => 'both',
-            ];
-        }
 
         /** @var list<ECSRuleClass> $skipRules */
         $skipRules = [];
@@ -410,7 +444,19 @@ abstract class AbstractConfigSet
      */
     protected function getRules(): array
     {
+        $rules = [];
+        $header = $this->getHeader();
+        if ($header !== null) {
+            $rules[HeaderCommentFixer::class] = [
+                'header' => $header,
+                'comment_type' => 'comment',
+                'location' => 'after_open',
+                'separate' => 'both',
+            ];
+        }
+
         return array_merge(
+            $rules,
             $this->getPhpCsFixerRules(),
             $this->getKubawerlosFixerRules(),
             $this->getPedroTrollerFixerRules(),
@@ -1178,7 +1224,7 @@ abstract class AbstractConfigSet
 
                 $fileFound = true;
             } else {
-                $dir = dirname($dir);
+                $dir = \dirname($dir);
             }
         }
 

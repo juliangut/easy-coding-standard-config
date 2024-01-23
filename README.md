@@ -25,27 +25,21 @@ Create `ecs.php` file at your project's root directory
 <?php
 
 use Jgut\ECS\ConfigSet82;
-use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 $header = <<<'HEADER'
-slim-routing (https://github.com/juliangut/slim-routing).
-Slim framework routing.
+Easy Coding Standard config.
 
 @license BSD-3-Clause
-@link https://github.com/juliangut/slim-routing
-@author Julián Gutiérrez <juliangut@gmail.com>
+@link https://github.com/juliangut/easy-coding-standard-config
 HEADER;
 
-return static function (ECSConfig $ecsConfig) use ($header): void {
-    $ecsConfig->paths([
+return (new ConfigSet82())
+    ->setHeader($header)
+    ->configureBuilder()
+    ->withPaths([
         __FILE__,
         __DIR__ . '/src',
-        __DIR__ . '/tests',
     ]);
-
-    (new ConfigSet82())
-        ->configure($ecsConfig);
-};
 ```
 
 Use one of the provided configurations depending on the PHP version you want to support:
@@ -53,7 +47,6 @@ Use one of the provided configurations depending on the PHP version you want to 
 * `Jgut\ECS\ConfigSet82`, PHP >= 8.2
 * `Jgut\ECS\ConfigSet81`, PHP >= 8.1
 * `Jgut\ECS\ConfigSet80`, PHP >= 8.0
-* `Jgut\ECS\ConfigSet74`, PHP >= 7.4
 
 ### Configurations
 
