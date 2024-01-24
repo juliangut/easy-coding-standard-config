@@ -33,11 +33,17 @@ qa-phpmnd:
 
 .PHONY: qa-compatibility
 qa-compatibility:
-	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.2- src
+	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.3- src
 
 .PHONY: qa-phpstan
 qa-phpstan:
+ifeq ($(shell php -v | grep "^PHP" | awk '/ +/{ printf "%s",$$2 }' | awk -F. '//{ printf "%s.%s",$$1,$$2 }'), 8.0)
+	vendor/bin/phpstan analyse --configuration=phpstan.8.0.neon --memory-limit=2G --no-progress
+else ifeq ($(shell php -v | grep "^PHP" | awk '/ +/{ printf "%s",$$2 }' | awk -F. '//{ printf "%s.%s",$$1,$$2 }'), 8.1)
+	vendor/bin/phpstan analyse --configuration=phpstan.8.1.neon --memory-limit=2G --no-progress
+else
 	vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --memory-limit=2G --no-progress
+endif
 
 .PHONY: qa
 qa:

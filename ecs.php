@@ -10,18 +10,26 @@
 declare(strict_types=1);
 
 use Jgut\ECS\Config\ConfigSet80;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-$header = <<<'HEADER'
-(c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
+$configSet = (new ConfigSet80())
+    ->setHeader(<<<'HEADER'
+    (c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
 
-@license BSD-3-Clause
-@link https://github.com/juliangut/easy-coding-standard-config
-HEADER;
+    @license BSD-3-Clause
+    @link https://github.com/juliangut/easy-coding-standard-config
+    HEADER);
+$paths = [
+    __FILE__,
+    __DIR__ . '/src',
+];
 
-return (new ConfigSet80())
-    ->setHeader($header)
-    ->configureBuilder()
-    ->withPaths([
-        __FILE__,
-        __DIR__ . '/src',
-    ]);
+return !method_exists(ECSConfig::class, 'configure')
+    ? static function (ECSConfig $ecsConfig) use ($configSet, $paths): void {
+        $ecsConfig->paths($paths);
+
+        $configSet->configure($ecsConfig);
+    }
+    : $configSet
+        ->configureBuilder()
+        ->withPaths($paths);

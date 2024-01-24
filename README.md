@@ -26,15 +26,13 @@ Create `ecs.php` file at your project's root directory
 
 use Jgut\ECS\ConfigSet82;
 
-$header = <<<'HEADER'
-Easy Coding Standard config.
-
-@license BSD-3-Clause
-@link https://github.com/juliangut/easy-coding-standard-config
-HEADER;
-
 return (new ConfigSet82())
-    ->setHeader($header)
+    ->setHeader(<<<'HEADER'
+    Easy Coding Standard config.
+
+    @license BSD-3-Clause
+    @link https://github.com/juliangut/easy-coding-standard-config
+    HEADER)
     ->configureBuilder()
     ->withPaths([
         __FILE__,
@@ -44,6 +42,7 @@ return (new ConfigSet82())
 
 Use one of the provided configurations depending on the PHP version you want to support:
 
+* `Jgut\ECS\ConfigSet83`, PHP >= 8.3
 * `Jgut\ECS\ConfigSet82`, PHP >= 8.2
 * `Jgut\ECS\ConfigSet81`, PHP >= 8.1
 * `Jgut\ECS\ConfigSet80`, PHP >= 8.0
@@ -71,7 +70,7 @@ The string `{{year}}` will be replaced by the current year, and the string `{{pa
  <?php
 
 +/*
-+ * (c) 2021-2023 Julián Gutiérrez <juliangut@gmail.com>
++ * (c) 2021-2024 Julián Gutiérrez <juliangut@gmail.com>
 + *
 + * This file is part of package juliangut/php-cs-fixer-config
 + */
@@ -84,7 +83,7 @@ The string `{{year}}` will be replaced by the current year, and the string `{{pa
 If `{{year}}` is preceded by current year it will be combined into a single date
 
 ```php
-// Assuming current year is 2023
+// Assuming current year is 2024
 (new ConfigSet82())
     ->setHeader(<<<'HEADER'
     (c) 2023-{{year}} Julián Gutiérrez <juliangut@gmail.com>
@@ -99,7 +98,7 @@ If `{{year}}` is preceded by current year it will be combined into a single date
  <?php
 
 +/*
-+ * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
++ * (c) 2024 Julián Gutiérrez <juliangut@gmail.com>
 + *
 + * This file is part of package juliangut/php-cs-fixer-config
 + */

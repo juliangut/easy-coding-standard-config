@@ -366,7 +366,7 @@ abstract class AbstractConfigSet
         $builder ??= ECSConfig::configure();
 
         $builder
-            ->withSpacing(indentation: Option::INDENTATION_SPACES, lineEnding: \PHP_EOL)
+            ->withSpacing(indentation: Option::INDENTATION_SPACES, lineEnding: "\n")
             ->withPreparedSets(psr12: true);
 
         /** @var array<ECSRuleClass, bool|array<string, mixed>> $rules */
@@ -429,12 +429,11 @@ abstract class AbstractConfigSet
             }
         }
 
-        $skipRules = array_merge(
+        $ecsConfig->skip(array_merge(
             $skipRules,
             $this->getSkips(),
             $this->additionalSkips,
-        );
-        $ecsConfig->skip($skipRules);
+        ));
 
         return $this;
     }
@@ -1216,16 +1215,19 @@ abstract class AbstractConfigSet
 
     private function getRootPackage(): string
     {
-        $fileFound = false;
         $dir = __DIR__;
-        while (!$fileFound && $dir !== '/') {
+        while ($dir !== '/') {
             if (file_exists($dir . '/vendor/composer/InstalledVersions.php')) {
                 require_once $dir . '/vendor/composer/InstalledVersions.php';
 
-                $fileFound = true;
-            } else {
-                $dir = \dirname($dir);
+                break;
             }
+
+            $dir = \dirname($dir);
+        }
+
+        if ($dir === '/') {
+            throw new RuntimeException('Composer installed versions file could not be found.');
         }
 
         return InstalledVersions::getRootPackage()['name'];

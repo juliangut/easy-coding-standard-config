@@ -1,0 +1,13 @@
+includes:
+  - phpstan.neon.dist
+
+parameters:
+  ignoreErrors:
+    - message: '/^Call to method withPaths\(\) on an unknown class Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
+      path: ecs.php
+    - message: '/^Method Jgut\\ECS\\Config\\AbstractConfigSet::configureBuilder\(\) has invalid return type Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
+      path: src/AbstractConfigSet.php
+    - message: '/^Parameter \$builder of method Jgut\\ECS\\Config\\AbstractConfigSet::configureBuilder\(\) has invalid type Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
+      path: src/AbstractConfigSet.php
+    - message: '/^Call to an undefined static method Symplify\\EasyCodingStandard\\Config\\ECSConfig::configure\(\)\.$/'
+      path: src/AbstractConfigSet.php
