@@ -24,12 +24,14 @@ $paths = [
     __DIR__ . '/src',
 ];
 
-return !method_exists(ECSConfig::class, 'configure')
-    ? static function (ECSConfig $ecsConfig) use ($configSet, $paths): void {
+if (!method_exists(ECSConfig::class, 'configure')) {
+    return static function (ECSConfig $ecsConfig) use ($configSet, $paths): void {
         $ecsConfig->paths($paths);
 
         $configSet->configure($ecsConfig);
-    }
-    : $configSet
-        ->configureBuilder()
-        ->withPaths($paths);
+    };
+}
+
+return $configSet
+    ->configureBuilder()
+    ->withPaths($paths);
