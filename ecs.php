@@ -19,21 +19,20 @@ $configSet = (new ConfigSet80())
 
     @license BSD-3-Clause
     @link https://github.com/juliangut/easy-coding-standard-config
-    HEADER);
+    HEADER)
+    ->setAdditionalSkips([
+        PhpdocListTypeFixer::class => [
+            __DIR__ . '/src/AbstractConfigSet.php',
+        ],
+    ]);
 $paths = [
     __FILE__,
     __DIR__ . '/src',
 ];
-$skips = [
-    PhpdocListTypeFixer::class => [
-        __DIR__ . '/src/AbstractConfigSet.php',
-    ],
-];
 
 if (!method_exists(ECSConfig::class, 'configure')) {
-    return static function (ECSConfig $ecsConfig) use ($configSet, $paths, $skips): void {
+    return static function (ECSConfig $ecsConfig) use ($configSet, $paths): void {
         $ecsConfig->paths($paths);
-        $configSet->setAdditionalSkips($skips);
 
         $configSet->configure($ecsConfig);
     };
@@ -41,5 +40,4 @@ if (!method_exists(ECSConfig::class, 'configure')) {
 
 return $configSet
     ->configureBuilder()
-    ->withSkip($skips)
     ->withPaths($paths);
