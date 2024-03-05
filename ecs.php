@@ -10,6 +10,7 @@
 declare(strict_types=1);
 
 use Jgut\ECS\Config\ConfigSet80;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 $configSet = (new ConfigSet80())
@@ -23,10 +24,16 @@ $paths = [
     __FILE__,
     __DIR__ . '/src',
 ];
+$skips = [
+    PhpdocListTypeFixer::class => [
+        __DIR__ . '/src/AbstractConfigSet.php',
+    ],
+];
 
 if (!method_exists(ECSConfig::class, 'configure')) {
-    return static function (ECSConfig $ecsConfig) use ($configSet, $paths): void {
+    return static function (ECSConfig $ecsConfig) use ($configSet, $paths, $skips): void {
         $ecsConfig->paths($paths);
+        $configSet->setAdditionalSkips($skips);
 
         $configSet->configure($ecsConfig);
     };
@@ -34,4 +41,5 @@ if (!method_exists(ECSConfig::class, 'configure')) {
 
 return $configSet
     ->configureBuilder()
+    ->withSkip($skips)
     ->withPaths($paths);

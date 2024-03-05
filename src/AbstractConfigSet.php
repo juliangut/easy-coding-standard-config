@@ -345,7 +345,7 @@ abstract class AbstractConfigSet
     private array $additionalRules = [];
 
     /**
-     * @var list<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
+     * @var array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
      */
     private array $additionalSkips = [];
 
@@ -1161,7 +1161,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @return list<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
+     * @return array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
      */
     protected function getSkips(): array
     {
@@ -1179,7 +1179,7 @@ abstract class AbstractConfigSet
     }
 
     /**
-     * @param list<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null> $additionalSkips
+     * @param array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null> $additionalSkips
      */
     public function setAdditionalSkips(array $additionalSkips): self
     {
