@@ -173,9 +173,11 @@ use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocArrayTypeFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
@@ -224,7 +226,6 @@ use PhpCsFixer\Fixer\Semicolon\SpaceAfterSemicolonFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
-use PhpCsFixer\Fixer\StringNotation\EscapeImplicitBackslashesFixer;
 use PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer;
 use PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer;
 use PhpCsFixer\Fixer\StringNotation\MultilineStringToHeredocFixer;
@@ -232,6 +233,7 @@ use PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer;
 use PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer;
 use PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer;
 use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
+use PhpCsFixer\Fixer\StringNotation\StringImplicitBackslashesFixer;
 use PhpCsFixer\Fixer\StringNotation\StringLengthToEmptyFixer;
 use PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer;
 use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
@@ -259,7 +261,6 @@ use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDoctrineRepositoryCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessParenthesisFixer;
-use PhpCsFixerCustomFixers\Fixer\PhpdocArrayStyleFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocNoSuperfluousParamFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocParamTypeFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocSelfAccessorFixer;
@@ -536,11 +537,6 @@ abstract class AbstractConfigSet
                 'mute_deprecation_error' => false,
                 'noise_remaining_usages' => false,
             ],
-            EscapeImplicitBackslashesFixer::class => [
-                'double_quoted' => true,
-                'heredoc_syntax' => true,
-                'single_quoted' => false,
-            ],
             ExplicitIndirectVariableFixer::class => true,
             ExplicitStringVariableFixer::class => true,
             // FinalClassFixer::class => true,
@@ -722,6 +718,7 @@ abstract class AbstractConfigSet
                 'tags' => ['method', 'param', 'property', 'return', 'throws', 'type', 'var'],
             ],
             PhpdocAnnotationWithoutDotFixer::class => true,
+            PhpdocArrayTypeFixer::class => true,
             PhpdocIndentFixer::class => true,
             PhpdocInlineTagNormalizerFixer::class => true,
             PhpdocLineSpanFixer::class => [
@@ -729,6 +726,7 @@ abstract class AbstractConfigSet
                 'property' => 'multi',
                 'method' => 'multi',
             ],
+            PhpdocListTypeFixer::class => true,
             PhpdocNoAccessFixer::class => true,
             PhpdocNoAliasTagFixer::class => true,
             PhpdocNoEmptyReturnFixer::class => true,
@@ -808,6 +806,7 @@ abstract class AbstractConfigSet
             StaticLambdaFixer::class => true,
             StrictComparisonFixer::class => true,
             StrictParamFixer::class => true,
+            StringImplicitBackslashesFixer::class => true,
             StringLengthToEmptyFixer::class => true,
             StringLineEndingFixer::class => true,
             SwitchContinueToBreakFixer::class => true,
@@ -955,7 +954,6 @@ abstract class AbstractConfigSet
             NoUselessCommentFixer::class => true,
             NoUselessDirnameCallFixer::class => true,
             NoUselessParenthesisFixer::class => true,
-            PhpdocArrayStyleFixer::class => true,
             PhpdocNoSuperfluousParamFixer::class => true,
             PhpdocParamTypeFixer::class => true,
             PhpdocSelfAccessorFixer::class => true,
