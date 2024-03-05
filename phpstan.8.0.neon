@@ -3,7 +3,7 @@ includes:
 
 parameters:
   ignoreErrors:
-    - message: '/^Call to method withPaths\(\) on an unknown class Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
+    - message: '/^Call to method withSkip\(\) on an unknown class Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
       path: ecs.php
     - message: '/^Method Jgut\\ECS\\Config\\AbstractConfigSet::configureBuilder\(\) has invalid return type Symplify\\EasyCodingStandard\\Configuration\\ECSConfigBuilder\.$/'
       path: src/AbstractConfigSet.php
