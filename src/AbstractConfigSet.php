@@ -24,6 +24,7 @@ use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifierSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
@@ -199,6 +200,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
@@ -693,9 +695,7 @@ abstract class AbstractConfigSet
             NullableTypeDeclarationFixer::class => [
                 'syntax' => 'question_mark',
             ],
-            NullableTypeDeclarationForDefaultNullValueFixer::class => [
-                'use_nullable_type_declaration' => true,
-            ],
+            NullableTypeDeclarationForDefaultNullValueFixer::class => true,
             NumericLiteralSeparatorFixer::class => true,
             ObjectOperatorWithoutWhitespaceFixer::class => true,
             OperatorLinebreakFixer::class => [
@@ -845,6 +845,7 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
+                    PhpUnitAttributesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
@@ -1062,6 +1063,7 @@ abstract class AbstractConfigSet
                 'error' => true,
             ],
             OneObjectStructurePerFileSniff::class => true,
+            RequireExplicitBooleanOperatorPrecedenceSniff::class => true,
             StaticThisUsageSniff::class => true,
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
