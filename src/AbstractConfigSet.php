@@ -200,7 +200,6 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
@@ -845,7 +844,6 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
-                    PhpUnitAttributesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],

@@ -20,7 +20,7 @@
     "require": {
         "php": "^8.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.54",
+        "friendsofphp/php-cs-fixer": "^3.53",
         "juliangut/php-codesniffer-custom-sniffs": "^1.2",
         "juliangut/php-cs-fixer-custom-fixers": "^1.0",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.21",
