@@ -6,7 +6,7 @@ lint-php:
 
 .PHONY: lint-ecs
 lint-ecs:
-	vendor/bin/ecs check --verbose --ansi
+	vendor/bin/ecs check --output-format=console --verbose --ansi
 
 .PHONY: lint
 lint:
@@ -16,7 +16,7 @@ lint:
 
 .PHONY: fix-ecs
 fix-ecs:
-	vendor/bin/ecs check --fix --verbose --ansi
+	vendor/bin/ecs check --output-format=console --fix --verbose --ansi
 
 .PHONY: fix
 fix:

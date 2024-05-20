@@ -1028,7 +1028,7 @@ abstract class AbstractConfigSet
      */
     private function getPhpCodeSnifferRules(): array
     {
-        return [
+        $rules = [
             CommentedOutCodeSniff::class => [
                 'maxPercentage' => 70,
             ],
@@ -1061,7 +1061,6 @@ abstract class AbstractConfigSet
                 'error' => true,
             ],
             OneObjectStructurePerFileSniff::class => true,
-            RequireExplicitBooleanOperatorPrecedenceSniff::class => true,
             StaticThisUsageSniff::class => true,
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
@@ -1072,6 +1071,12 @@ abstract class AbstractConfigSet
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
+
+        if (\PHP_VERSION_ID >= 80_200) {
+            $rules[RequireExplicitBooleanOperatorPrecedenceSniff::class] = true;
+        }
+
+        return $rules;
     }
 
     /**
