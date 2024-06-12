@@ -15,6 +15,10 @@ use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 
@@ -39,12 +43,26 @@ class ConfigSet81 extends AbstractConfigSet
      */
     private function getPhpCsFixerRules(): array
     {
-        return [
+        $rules = [
             BracesPositionFixer::class => true,
             NativeTypeDeclarationCasingFixer::class => true,
             OctalNotationFixer::class => true,
+            PhpdocParamOrderFixer::class => true,
             PhpdocReadonlyClassCommentToKeywordFixer::class => true,
         ];
+
+        if ($this->phpUnit) {
+            $rules = array_merge(
+                $rules,
+                [
+                    PhpUnitAttributesFixer::class => true,
+                    PhpUnitDataProviderNameFixer::class => true,
+                    PhpUnitDataProviderReturnTypeFixer::class => true,
+                ],
+            );
+        }
+
+        return $rules;
     }
 
     /**

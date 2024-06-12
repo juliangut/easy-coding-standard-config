@@ -24,7 +24,6 @@ use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifierSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
@@ -185,7 +184,6 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
-use PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
@@ -200,10 +198,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer;
@@ -335,11 +330,11 @@ abstract class AbstractConfigSet
 {
     private ?string $header = null;
 
-    private bool $doctrine = false;
+    protected bool $doctrine = false;
 
-    private bool $phpUnit = false;
+    protected bool $phpUnit = false;
 
-    private bool $typeInfer = false;
+    protected bool $typeInfer = false;
 
     /**
      * @var array<ECSRuleClass, bool|array<string, mixed>>
@@ -837,15 +832,10 @@ abstract class AbstractConfigSet
             ],
         ];
 
-        if (\PHP_VERSION_ID >= 80_100) {
-            $rules[PhpdocParamOrderFixer::class] = true;
-        }
-
         if ($this->phpUnit) {
             $rules = array_merge(
                 $rules,
                 [
-                    PhpUnitAttributesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
@@ -897,11 +887,6 @@ abstract class AbstractConfigSet
                     // PhpUnitTestClassRequiresCoversFixer::class => true,
                 ],
             );
-
-            if (\PHP_VERSION >= 80_100) {
-                $rules[PhpUnitDataProviderNameFixer::class] = true;
-                $rules[PhpUnitDataProviderReturnTypeFixer::class] = true;
-            }
         }
 
         if ($this->doctrine) {
@@ -1030,7 +1015,7 @@ abstract class AbstractConfigSet
      */
     private function getPhpCodeSnifferRules(): array
     {
-        $rules = [
+        return [
             CommentedOutCodeSniff::class => [
                 'maxPercentage' => 70,
             ],
@@ -1073,12 +1058,6 @@ abstract class AbstractConfigSet
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
-
-        if (\PHP_VERSION_ID >= 80_200) {
-            $rules[RequireExplicitBooleanOperatorPrecedenceSniff::class] = true;
-        }
-
-        return $rules;
     }
 
     /**
