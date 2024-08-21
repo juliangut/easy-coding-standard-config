@@ -351,7 +351,7 @@ abstract class AbstractConfigSet
     public function __construct()
     {
         if (version_compare($this->getRequiredPhpVersion(), \PHP_VERSION, '>')) {
-            throw new RuntimeException(sprintf(
+            throw new RuntimeException(\sprintf(
                 'Minimum required PHP version is "%s", current version is "%s".',
                 $this->getRequiredPhpVersion(),
                 \PHP_VERSION,
