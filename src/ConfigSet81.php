@@ -55,11 +55,14 @@ class ConfigSet81 extends AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
-                    PhpUnitAttributesFixer::class => true,
                     PhpUnitDataProviderNameFixer::class => true,
                     PhpUnitDataProviderReturnTypeFixer::class => true,
                 ],
             );
+
+            if ($this->isMinPhpCsFixerVersion('3.54.0')) {
+                $rules[PhpUnitAttributesFixer::class] = true;
+            }
         }
 
         return $rules;

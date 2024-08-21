@@ -198,6 +198,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
@@ -253,6 +254,7 @@ use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDuplicatedArrayKeyFixer;
 use PhpCsFixerCustomFixers\Fixer\NoLeadingSlashInGlobalNamespaceFixer;
 use PhpCsFixerCustomFixers\Fixer\NoNullableBooleanTypeFixer;
+use PhpCsFixerCustomFixers\Fixer\NoSuperfluousConcatenationFixer;
 use PhpCsFixerCustomFixers\Fixer\NoTrailingCommaInSinglelineFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer;
@@ -836,6 +838,7 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
+                    PhpUnitAssertNewNamesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
@@ -936,6 +939,7 @@ abstract class AbstractConfigSet
             ],
             NoLeadingSlashInGlobalNamespaceFixer::class => true,
             NoNullableBooleanTypeFixer::class => true,
+            NoSuperfluousConcatenationFixer::class => true,
             NoTrailingCommaInSinglelineFixer::class => true,
             NoUselessCommentFixer::class => true,
             NoUselessDirnameCallFixer::class => true,

@@ -20,10 +20,10 @@
     "require": {
         "php": "^8.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.57.1",
+        "friendsofphp/php-cs-fixer": "^3.61.1",
         "juliangut/php-codesniffer-custom-sniffs": "^1.2",
-        "juliangut/php-cs-fixer-custom-fixers": "^1.0",
-        "kubawerlos/php-cs-fixer-custom-fixers": "^3.21",
+        "juliangut/php-cs-fixer-custom-fixers": "^1.1",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.22",
         "lcobucci/clock": "^2.2|^3.0",
         "nikic/php-parser": "^4.7",
         "pedrotroller/php-cs-custom-fixer": "^2.33",

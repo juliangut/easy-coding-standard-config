@@ -10,7 +10,6 @@
 declare(strict_types=1);
 
 use Jgut\ECS\Config\ConfigSet80;
-use PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 $configSet = (new ConfigSet80())
@@ -20,11 +19,8 @@ $configSet = (new ConfigSet80())
     @license BSD-3-Clause
     @link https://github.com/juliangut/easy-coding-standard-config
     HEADER)
-    ->setAdditionalSkips([
-        PhpdocListTypeFixer::class => [
-            __DIR__ . '/src/AbstractConfigSet.php',
-        ],
-    ]);
+    ->enablePhpUnitRules()
+    ->enableDoctrineRules();
 $paths = [
     __FILE__,
     __DIR__ . '/src',
