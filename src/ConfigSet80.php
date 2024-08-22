@@ -14,6 +14,9 @@ namespace Jgut\ECS\Config;
 use PhpCsFixer\Fixer\Basic\CurlyBracesPositionFixer;
 use PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer;
 
+/**
+ * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
+ */
 class ConfigSet80 extends AbstractConfigSet
 {
     protected function getRequiredPhpVersion(): string

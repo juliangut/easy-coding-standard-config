@@ -13,6 +13,9 @@ namespace Jgut\ECS\Config;
 
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff;
 
+/**
+ * @phpstan-import-type PhpCodeSnifferRuleList from AbstractConfigSet
+ */
 class ConfigSet82 extends ConfigSet81
 {
     protected function getRequiredPhpVersion(): string

@@ -22,6 +22,7 @@ use Lcobucci\Clock\SystemClock;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
 use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
@@ -109,6 +110,7 @@ use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer;
 use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer;
 use PhpCsFixer\Fixer\FunctionNotation\DateTimeCreateFromFormatCallFixer;
 use PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer;
@@ -246,7 +248,6 @@ use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
-use PhpCsFixerCustomFixers\Fixer\ConstructorEmptyBracesFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
 use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
@@ -325,11 +326,18 @@ use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 /**
+ * @phpstan-type ECSRuleClass class-string<Sniff|FixerInterface>
+ * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
+ * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 abstract class AbstractConfigSet
 {
+    private const COMPARISON_MAX = '<=';
+    private const COMPARISON_MIN = '>=';
+
     private ?string $header = null;
 
     protected bool $doctrine = false;
@@ -611,7 +619,7 @@ abstract class AbstractConfigSet
             ],
             NativeFunctionCasingFixer::class => true,
             NativeFunctionInvocationFixer::class => [
-                'include' => ['@compiler_optimized'],
+                'include' => ['@compiler_optimized', 'sprintf'], // PHP-CS-Fixer includes 'sprintf' in 3.60
                 'scope' => 'all',
                 'strict' => true,
             ],
@@ -838,7 +846,6 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
-                    PhpUnitAssertNewNamesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
@@ -890,6 +897,10 @@ abstract class AbstractConfigSet
                     // PhpUnitTestClassRequiresCoversFixer::class => true,
                 ],
             );
+
+            if ($this->isMinPhpCsFixerVersion('3.60.0')) {
+                $rules[PhpUnitAssertNewNamesFixer::class] = true;
+            }
         }
 
         if ($this->doctrine) {
@@ -930,7 +941,6 @@ abstract class AbstractConfigSet
     {
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
-            ConstructorEmptyBracesFixer::class => true,
             IssetToArrayKeyExistsFixer::class => true,
             MultilinePromotedPropertiesFixer::class => true,
             NoCommentedOutCodeFixer::class => true,
@@ -1242,27 +1252,52 @@ abstract class AbstractConfigSet
         return $this;
     }
 
+    final protected function isMinPhpVersion(string $version): bool
+    {
+        return version_compare(\PHP_VERSION, $version, self::COMPARISON_MAX);
+    }
+
+    final protected function isMaxPhpVersion(string $version): bool
+    {
+        return version_compare(\PHP_VERSION, $version, self::COMPARISON_MAX);
+    }
+
     final protected function isMinPhpCsFixerVersion(string $version): bool
     {
-        return $this->isMinLibraryVersion('friendsofphp/php-cs-fixer', $version);
+        return $this->libVersionCompare('friendsofphp/php-cs-fixer', $version, self::COMPARISON_MIN);
+    }
+
+    final protected function isMaxPhpCsFixerVersion(string $version): bool
+    {
+        return $this->libVersionCompare('friendsofphp/php-cs-fixer', $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinKubawerlosVersion(string $version): bool
     {
-        return $this->isMinLibraryVersion('kubawerlos/php-cs-fixer-custom-fixers', $version);
+        return $this->libVersionCompare('kubawerlos/php-cs-fixer-custom-fixers', $version, self::COMPARISON_MIN);
+    }
+
+    final protected function isMaxKubawerlosVersion(string $version): bool
+    {
+        return $this->libVersionCompare('kubawerlos/php-cs-fixer-custom-fixers', $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinSlevomatVersion(string $version): bool
     {
-        return $this->isMinLibraryVersion('slevomat/coding-standard', $version);
+        return $this->libVersionCompare('slevomat/coding-standard', $version, self::COMPARISON_MIN);
     }
 
-    private function isMinLibraryVersion(string $library, string $comparisonVersion): bool
+    final protected function isMsxSlevomatVersion(string $version): bool
+    {
+        return $this->libVersionCompare('slevomat/coding-standard', $version, self::COMPARISON_MAX);
+    }
+
+    private function libVersionCompare(string $library, string $comparisonVersion, string $comparison): bool
     {
         return version_compare(
             (string) preg_replace('/^v/', '', InstalledVersions::getPrettyVersion($library) ?? ''),
             $comparisonVersion,
-            '>=',
+            $comparison,
         );
     }
 }

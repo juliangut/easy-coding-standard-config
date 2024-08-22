@@ -22,6 +22,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 
+/**
+ * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
+ * @phpstan-import-type PhpCodeSnifferRuleList from AbstractConfigSet
+ */
 class ConfigSet81 extends AbstractConfigSet
 {
     protected function getRequiredPhpVersion(): string
