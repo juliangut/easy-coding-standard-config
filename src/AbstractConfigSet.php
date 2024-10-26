@@ -55,6 +55,7 @@ use PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer;
 use PhpCsFixer\Fixer\Alias\PowToExponentiationFixer;
 use PhpCsFixer\Fixer\Alias\RandomApiMigrationFixer;
 use PhpCsFixer\Fixer\Alias\SetTypeToCastFixer;
+use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer;
@@ -69,6 +70,7 @@ use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
 use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
 use PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer;
+use PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer;
 use PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer;
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer;
@@ -85,6 +87,7 @@ use PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer;
 use PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer;
 use PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer;
 use PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer;
+use PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
 use PhpCsFixer\Fixer\ClassNotation\SingleTraitInsertPerStatementFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
@@ -320,6 +323,7 @@ use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
+use Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\Configuration\ECSConfigBuilder;
 use Symplify\EasyCodingStandard\ValueObject\Option;
@@ -412,8 +416,8 @@ abstract class AbstractConfigSet
 
     final public function configure(ECSConfig $ecsConfig): self
     {
+        $ecsConfig->indentation('spaces');
         $ecsConfig->lineEnding("\n");
-
         $ecsConfig->sets([SetList::PSR_12]);
 
         /** @var array<ECSRuleClass, bool|array<string, mixed>> $rules */
@@ -491,8 +495,12 @@ abstract class AbstractConfigSet
             ],
             ArrayIndentationFixer::class => true,
             ArrayPushFixer::class => true,
+            ArraySyntaxFixer::class => [
+                'syntax' => 'short',
+            ],
             AssignNullCoalescingToCoalesceEqualFixer::class => true,
             BacktickToShellExecFixer::class => true,
+            BlankLineAfterStrictTypesFixer::class => true,
             AttributeEmptyParenthesesFixer::class => true,
             BinaryOperatorSpacesFixer::class => [
                 'default' => 'single_space',
@@ -594,6 +602,7 @@ abstract class AbstractConfigSet
             LinebreakAfterOpeningTagFixer::class => true,
             LogicalOperatorsFixer::class => true,
             LongToShorthandOperatorFixer::class => true,
+            LowercaseStaticReferenceFixer::class => true,
             MagicConstantCasingFixer::class => true,
             MagicMethodCasingFixer::class => true,
             MbStrFunctionsFixer::class => true,
@@ -791,6 +800,7 @@ abstract class AbstractConfigSet
             SimpleToComplexStringVariableFixer::class => true,
             SimplifiedIfReturnFixer::class => true,
             SimplifiedNullReturnFixer::class => true,
+            SingleClassElementPerStatementFixer::class => true,
             SingleLineCommentSpacingFixer::class => true,
             SingleLineCommentStyleFixer::class => [
                 'comment_types' => ['asterisk', 'hash'],
