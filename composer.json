@@ -25,7 +25,7 @@
         "juliangut/php-cs-fixer-custom-fixers": "^1.1.1",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.22",
         "lcobucci/clock": "^2.2|^3.0",
-        "nikic/php-parser": "^4.7",
+        "nikic/php-parser": "^4.19|^5.2",
         "pedrotroller/php-cs-custom-fixer": "^2.33",
         "slevomat/coding-standard": "^8.15",
         "squizlabs/php_codesniffer": "^3.10",
