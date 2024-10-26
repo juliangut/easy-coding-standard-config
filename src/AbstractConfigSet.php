@@ -828,7 +828,6 @@ abstract class AbstractConfigSet
             TernaryToElvisOperatorFixer::class => true,
             TernaryToNullCoalescingFixer::class => true,
             TrailingCommaInMultilineFixer::class => [
-                'elements' => ['arrays', 'arguments', 'parameters'],
                 'after_heredoc' => true,
             ],
             TrimArraySpacesFixer::class => true,
