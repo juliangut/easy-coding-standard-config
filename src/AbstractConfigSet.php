@@ -1040,7 +1040,7 @@ abstract class AbstractConfigSet
      */
     private function getPhpCodeSnifferRules(): array
     {
-        return [
+        $rules = [
             CommentedOutCodeSniff::class => [
                 'maxPercentage' => 70,
             ],
@@ -1058,7 +1058,6 @@ abstract class AbstractConfigSet
             ],
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
-            HereNowdocIdentifierSpacingSniff::class => true,
             LineLengthSniff::class => [
                 'lineLimit' => 120,
                 'absoluteLineLimit' => 120,
@@ -1078,13 +1077,19 @@ abstract class AbstractConfigSet
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
             UnnecessaryFinalModifierSniff::class => true,
-            UnnecessaryHeredocSniff::class => true,
             UnnecessaryStringConcatSniff::class => [
                 'allowMultiline' => true,
             ],
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
+
+        if ($this->isMinCodeSnifferVersion('3.11.0')) {
+            $rules[HereNowdocIdentifierSpacingSniff::class] = true;
+            $rules[UnnecessaryHeredocSniff::class] = true;
+        }
+
+        return $rules;
     }
 
     /**
@@ -1295,12 +1300,22 @@ abstract class AbstractConfigSet
         return $this->libVersionCompare('kubawerlos/php-cs-fixer-custom-fixers', $version, self::COMPARISON_MAX);
     }
 
+    final protected function isMinCodeSnifferVersion(string $version): bool
+    {
+        return $this->libVersionCompare('squizlabs/php_codesniffer', $version, self::COMPARISON_MIN);
+    }
+
+    final protected function isMaxCodeSnifferVersion(string $version): bool
+    {
+        return $this->libVersionCompare('squizlabs/php_codesniffer', $version, self::COMPARISON_MAX);
+    }
+
     final protected function isMinSlevomatVersion(string $version): bool
     {
         return $this->libVersionCompare('slevomat/coding-standard', $version, self::COMPARISON_MIN);
     }
 
-    final protected function isMsxSlevomatVersion(string $version): bool
+    final protected function isMaxSlevomatVersion(string $version): bool
     {
         return $this->libVersionCompare('slevomat/coding-standard', $version, self::COMPARISON_MAX);
     }
