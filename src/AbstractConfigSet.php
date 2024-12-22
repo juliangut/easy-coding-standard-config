@@ -38,8 +38,10 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowRequestSuperglobalSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\NoSilencedErrorsSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Strings\UnnecessaryHeredocSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Strings\UnnecessaryStringConcatSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\VersionControl\GitMergeConflictSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\HereNowdocIdentifierSpacingSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentThrowTagSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MemberVarScopeSniff;
@@ -1056,6 +1058,7 @@ abstract class AbstractConfigSet
             ],
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
+            HereNowdocIdentifierSpacingSniff::class => true,
             LineLengthSniff::class => [
                 'lineLimit' => 120,
                 'absoluteLineLimit' => 120,
@@ -1075,6 +1078,7 @@ abstract class AbstractConfigSet
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
             UnnecessaryFinalModifierSniff::class => true,
+            UnnecessaryHeredocSniff::class => true,
             UnnecessaryStringConcatSniff::class => [
                 'allowMultiline' => true,
             ],
