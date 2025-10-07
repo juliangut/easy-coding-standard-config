@@ -265,7 +265,6 @@ use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
-use PhpCsFixerCustomFixers\Fixer\FunctionParameterSeparationFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
@@ -981,7 +980,6 @@ abstract class AbstractConfigSet
     {
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
-            FunctionParameterSeparationFixer::class => true,
             IssetToArrayKeyExistsFixer::class => true,
             NoCommentedOutCodeFixer::class => true,
             NoDuplicatedArrayKeyFixer::class => [
