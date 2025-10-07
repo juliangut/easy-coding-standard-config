@@ -129,8 +129,10 @@ use PhpCsFixer\Fixer\FunctionNotation\FunctionDeclarationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer;
 use PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer;
 use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
+use PhpCsFixer\Fixer\FunctionNotation\MultilinePromotedPropertiesFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer;
+use PhpCsFixer\Fixer\FunctionNotation\NoUselessPrintfFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NoUselessSprintfFixer;
 use PhpCsFixer\Fixer\FunctionNotation\NullableTypeDeclarationForDefaultNullValueFixer;
 use PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer;
@@ -214,6 +216,7 @@ use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderMethodOrderFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
@@ -262,6 +265,7 @@ use PhpCsFixer\Fixer\Whitespace\StatementIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
+use PhpCsFixerCustomFixers\Fixer\FunctionParameterSeparationFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
@@ -327,7 +331,9 @@ use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\DisallowVariableVariableSniff;
+use Symplify\CodingStandard\Fixer\Annotation\RemoveMethodNameDuplicateDescriptionFixer;
 use Symplify\CodingStandard\Fixer\Annotation\RemovePHPStormAnnotationFixer;
+use Symplify\CodingStandard\Fixer\Annotation\RemovePropertyVariableNameDescriptionFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
 use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
@@ -629,6 +635,7 @@ abstract class AbstractConfigSet
             ModernizeStrposFixer::class => true,
             ModernizeTypesCastingFixer::class => true,
             MultilineCommentOpeningClosingFixer::class => true,
+            MultilinePromotedPropertiesFixer::class => true,
             MultilineStringToHeredocFixer::class => true,
             MultilineWhitespaceBeforeSemicolonsFixer::class => [
                 'strategy' => 'no_multi_line',
@@ -710,6 +717,7 @@ abstract class AbstractConfigSet
             NoUnusedImportsFixer::class => true,
             NoUselessElseFixer::class => true,
             NoUselessNullsafeOperatorFixer::class => true,
+            NoUselessPrintfFixer::class => true,
             NoUselessReturnFixer::class => true,
             NoUselessSprintfFixer::class => true,
             NoWhitespaceBeforeCommaInArrayFixer::class => [
@@ -876,6 +884,9 @@ abstract class AbstractConfigSet
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
+                    PhpUnitDataProviderMethodOrderFixer::class => [
+                        'placement' => 'before',
+                    ],
                     PhpUnitDataProviderNameFixer::class => true,
                     PhpUnitDataProviderReturnTypeFixer::class => true,
                     PhpUnitDataProviderStaticFixer::class => true,
@@ -970,6 +981,7 @@ abstract class AbstractConfigSet
     {
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
+            FunctionParameterSeparationFixer::class => true,
             IssetToArrayKeyExistsFixer::class => true,
             NoCommentedOutCodeFixer::class => true,
             NoDuplicatedArrayKeyFixer::class => [
@@ -1032,7 +1044,9 @@ abstract class AbstractConfigSet
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
+            RemoveMethodNameDuplicateDescriptionFixer::class => true,
             RemovePHPStormAnnotationFixer::class => true,
+            RemovePropertyVariableNameDescriptionFixer::class => true,
             ParamReturnAndVarTagMalformsFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
             StandaloneLineInMultilineArrayFixer::class => true,
