@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ${{ fromJson(needs.prepare_env.outputs.php) }}
+        php: [ 8.3 ]
 
     name: Analyse on PHP ${{ matrix.php }}
 

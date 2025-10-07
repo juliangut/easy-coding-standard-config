@@ -11,33 +11,10 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
-use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff;
-
-/**
- * @phpstan-import-type PhpCodeSnifferRuleList from AbstractConfigSet
- */
-class ConfigSet82 extends ConfigSet81
+class ConfigSet82 extends AbstractConfigSet
 {
     protected function getRequiredPhpVersion(): string
     {
         return '8.2.0';
-    }
-
-    protected function getRules(): array
-    {
-        return array_merge(
-            parent::getRules(),
-            $this->getPhpCodeSnifferRules(),
-        );
-    }
-
-    /**
-     * @return PhpCodeSnifferRuleList
-     */
-    protected function getPhpCodeSnifferRules(): array
-    {
-        return [
-            RequireExplicitBooleanOperatorPrecedenceSniff::class => true,
-        ];
     }
 }

@@ -11,11 +11,5 @@ parameters:
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
   ignoreErrors:
-    - message: '/^Call to function method_exists\(\) with .Symplify\\\\EasyCodingStandard\\\\Config\\\\ECSConfig. and .configure. will always evaluate to (true|false)\.$/'
-      path: ecs.php
     - message: '/^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\./'
       path: src/AbstractConfigSet.php
-    - messages:
-      - '/^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer\.$/'
-      - '/^Fetching class constant class of deprecated class PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer:\nin favor of NativeTypeDeclarationCasingFixer$/'
-      path: src/ConfigSet80.php

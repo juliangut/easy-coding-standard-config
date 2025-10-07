@@ -25,6 +25,7 @@ use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\RequireExplicitBooleanOperatorPrecedenceSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnconditionalIfStatementSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifierSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
@@ -65,9 +66,11 @@ use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer;
 use PhpCsFixer\Fixer\AttributeNotation\AttributeEmptyParenthesesFixer;
+use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer;
 use PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer;
+use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Fixer\Basic\PsrAutoloadingFixer;
 use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
@@ -76,6 +79,7 @@ use PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer;
 use PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer;
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Fixer\Casing\NativeFunctionCasingFixer;
+use PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer;
 use PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer;
@@ -86,6 +90,7 @@ use PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer;
+use PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer;
 use PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer;
 use PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer;
 use PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer;
@@ -191,6 +196,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocScalarFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
@@ -206,7 +212,10 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\EchoTagSyntaxFixer;
 use PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitAttributesFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderNameFixer;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderStaticFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertInternalTypeFixer;
@@ -254,7 +263,6 @@ use PhpCsFixer\Fixer\Whitespace\TypeDeclarationSpacesFixer;
 use PhpCsFixer\Fixer\Whitespace\TypesSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer;
-use PhpCsFixerCustomFixers\Fixer\MultilinePromotedPropertiesFixer;
 use PhpCsFixerCustomFixers\Fixer\NoCommentedOutCodeFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDoctrineMigrationsGeneratedCommentFixer;
 use PhpCsFixerCustomFixers\Fixer\NoDuplicatedArrayKeyFixer;
@@ -279,11 +287,13 @@ use SlevomatCodingStandard\Sniffs\Arrays\DisallowImplicitArrayCreationSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\AttributeAndTargetSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\DisallowAttributesJoiningSniff;
 use SlevomatCodingStandard\Sniffs\Attributes\RequireAttributeAfterDocCommentSniff;
+use SlevomatCodingStandard\Sniffs\Classes\BackedEnumTypeSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowLateStaticBindingForConstantsSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiConstantDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
+use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\RequireConstructorPropertyPromotionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\AnnotationNameSniff;
@@ -315,7 +325,6 @@ use SlevomatCodingStandard\Sniffs\Strings\DisallowVariableParsingSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff;
-use SlevomatCodingStandard\Sniffs\TypeHints\UnionTypeHintFormatSniff;
 use SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff;
 use SlevomatCodingStandard\Sniffs\Variables\DisallowVariableVariableSniff;
 use Symplify\CodingStandard\Fixer\Annotation\RemovePHPStormAnnotationFixer;
@@ -336,6 +345,7 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
  * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
  * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
  *
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
@@ -501,6 +511,7 @@ abstract class AbstractConfigSet
                 'syntax' => 'short',
             ],
             AssignNullCoalescingToCoalesceEqualFixer::class => true,
+            BracesPositionFixer::class => true,
             BacktickToShellExecFixer::class => true,
             BlankLineAfterStrictTypesFixer::class => true,
             AttributeEmptyParenthesesFixer::class => true,
@@ -634,6 +645,7 @@ abstract class AbstractConfigSet
                 'scope' => 'all',
                 'strict' => true,
             ],
+            NativeTypeDeclarationCasingFixer::class => true,
             NoAliasFunctionsFixer::class => [
                 'sets' => ['@all'],
             ],
@@ -714,6 +726,7 @@ abstract class AbstractConfigSet
             NullableTypeDeclarationForDefaultNullValueFixer::class => true,
             NumericLiteralSeparatorFixer::class => true,
             ObjectOperatorWithoutWhitespaceFixer::class => true,
+            OctalNotationFixer::class => true,
             OperatorLinebreakFixer::class => [
                 'position' => 'beginning',
                 'only_booleans' => false,
@@ -749,6 +762,8 @@ abstract class AbstractConfigSet
             PhpdocNoPackageFixer::class => true,
             PhpdocNoUselessInheritdocFixer::class => true,
             PhpdocOrderFixer::class => true,
+            PhpdocParamOrderFixer::class => true,
+            PhpdocReadonlyClassCommentToKeywordFixer::class => true,
             PhpdocReturnSelfReferenceFixer::class => true,
             PhpdocScalarFixer::class => true,
             PhpdocSeparationFixer::class => true,
@@ -857,9 +872,12 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
+                    PhpUnitAttributesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
                     ],
+                    PhpUnitDataProviderNameFixer::class => true,
+                    PhpUnitDataProviderReturnTypeFixer::class => true,
                     PhpUnitDataProviderStaticFixer::class => true,
                     PhpUnitDedicateAssertFixer::class => [
                         'target' => '5.6',
@@ -953,7 +971,6 @@ abstract class AbstractConfigSet
         $rules = [
             CommentSurroundedBySpacesFixer::class => true,
             IssetToArrayKeyExistsFixer::class => true,
-            MultilinePromotedPropertiesFixer::class => true,
             NoCommentedOutCodeFixer::class => true,
             NoDuplicatedArrayKeyFixer::class => [
                 'ignore_expressions' => true,
@@ -1104,6 +1121,10 @@ abstract class AbstractConfigSet
                 'ignoreAssignmentsInsideFunctionCalls' => true,
             ],
             AttributeAndTargetSpacingSniff::class => true,
+            BackedEnumTypeSpacingSniff::class => [
+                'spacesCountBeforeColon' => 0,
+                'spacesCountBeforeType' => 1,
+            ],
             ClassConstantVisibilitySniff::class => true,
             DeadCatchSniff::class => true,
             DisallowAttributesJoiningSniff::class => true,
@@ -1118,12 +1139,19 @@ abstract class AbstractConfigSet
             DisallowVariableParsingSniff::class => true,
             DisallowVariableVariableSniff::class => true,
             EmptyCommentSniff::class => true,
+            EnumCaseSpacingSniff::class => [
+                'minLinesCountBeforeWithComment' => 1,
+                'maxLinesCountBeforeWithComment' => 1,
+                'minLinesCountBeforeWithoutComment' => 1,
+                'maxLinesCountBeforeWithoutComment' => 1,
+            ],
             NamedArgumentSpacingSniff::class => true,
             ReferenceSpacingSniff::class => true,
             ReferenceThrowableOnlySniff::class => true,
             RequireAttributeAfterDocCommentSniff::class => true,
             RequireCombinedAssignmentOperatorSniff::class => true,
             RequireConstructorPropertyPromotionSniff::class => true,
+            RequireExplicitBooleanOperatorPrecedenceSniff::class => true,
             RequireMultiLineCallSniff::class => true,
             RequireMultiLineConditionSniff::class => [
                 'booleanOperatorOnPreviousLine' => false,
@@ -1136,12 +1164,6 @@ abstract class AbstractConfigSet
             RequireNullCoalesceOperatorSniff::class => true,
             RequireOnlyStandaloneIncrementAndDecrementOperatorsSniff::class => true,
             RequireShortTernaryOperatorSniff::class => true,
-            UnionTypeHintFormatSniff::class => [
-                'enable' => true,
-                'withSpaces' => 'no',
-                'shortNullable' => 'yes',
-                'nullPosition' => 'last',
-            ],
             UnusedInheritedVariablePassedToClosureSniff::class => true,
             UselessAliasSniff::class => true,
             UselessConstantTypeHintSniff::class => true,
@@ -1322,10 +1344,9 @@ abstract class AbstractConfigSet
 
     private function libVersionCompare(string $library, string $comparisonVersion, string $comparison): bool
     {
-        return version_compare(
-            (string) preg_replace('/^v/', '', InstalledVersions::getPrettyVersion($library) ?? ''),
-            $comparisonVersion,
-            $comparison,
-        );
+        /** @var string $version */
+        $version = preg_replace('/^v/', '', InstalledVersions::getPrettyVersion($library) ?? '');
+
+        return version_compare($version, $comparisonVersion, $comparison);
     }
 }
