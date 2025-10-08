@@ -39,7 +39,7 @@ class ConfigSet84 extends ConfigSet82
     private function getPhpCsFixerRules(): array
     {
         return [
-            NewExpressionParenthesesFixer::class => true,
+            // NewExpressionParenthesesFixer::class => true,
         ];
     }
 
