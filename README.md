@@ -1,4 +1,4 @@
-[![PHP version](https://img.shields.io/badge/PHP-%3E%3D8.0-8892BF.svg?style=flat-square)](http://php.net)
+[![PHP version](https://img.shields.io/badge/PHP-%3E%3D8.2-8892BF.svg?style=flat-square)](http://php.net)
 [![Latest Version](https://img.shields.io/packagist/v/juliangut/easy-coding-standard-config.svg?style=flat-square)](https://packagist.org/packages/juliangut/easy-coding-standard-config)
 [![License](https://img.shields.io/github/license/juliangut/easy-coding-standard-config.svg?style=flat-square)](https://github.com/juliangut/easy-coding-standard-config/blob/master/LICENSE)
 
@@ -24,7 +24,7 @@ Create `ecs.php` file at your project's root directory
 ```php
 <?php
 
-use Jgut\ECS\ConfigSet82;
+use Jgut\ECS\Config\ConfigSet82;
 
 return (new ConfigSet82())
     ->setHeader(<<<'HEADER'
@@ -42,10 +42,12 @@ return (new ConfigSet82())
 
 Use one of the provided configurations depending on the PHP version you want to support:
 
-* `Jgut\ECS\ConfigSet83`, PHP >= 8.3
-* `Jgut\ECS\ConfigSet82`, PHP >= 8.2
-* `Jgut\ECS\ConfigSet81`, PHP >= 8.1
-* `Jgut\ECS\ConfigSet80`, PHP >= 8.0
+* `Jgut\ECS\Config\ConfigSet84`, PHP >= 8.4
+* `Jgut\ECS\Config\ConfigSet83`, PHP >= 8.3
+* `Jgut\ECS\Config\ConfigSet82`, PHP >= 8.2
+
+Pick the configuration by the minimum PHP version your project supports, and not by the PHP version running
+the check, so a project verified on several PHP versions gets the same result on all of them
 
 ### Configurations
 
@@ -210,7 +212,7 @@ It is preferred to identify fixers by their class name, anyway using fixer names
 If you need more control over applied rules or prefer a cleaner setup, you can easily create your custom fixer config instead of setting additional rules
 
 ```php
-use Jgut\ECS\ConfigSet82;
+use Jgut\ECS\Config\ConfigSet82;
 use PhpCsFixer\Fixer\FunctionNotation\SingleLineThrowFixer;
 
 class CustomConfigSet extends ConfigSet82
