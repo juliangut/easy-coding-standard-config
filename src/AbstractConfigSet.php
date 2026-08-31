@@ -302,6 +302,7 @@ use SlevomatCodingStandard\Sniffs\Classes\DisallowMultiPropertyDefinitionSniff;
 use SlevomatCodingStandard\Sniffs\Classes\DisallowStringExpressionPropertyFetchSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EnumCaseSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\RequireConstructorPropertyPromotionSniff;
+use SlevomatCodingStandard\Sniffs\Classes\TraitUseOrderSniff;
 use SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\AnnotationNameSniff;
 use SlevomatCodingStandard\Sniffs\Commenting\EmptyCommentSniff;
@@ -338,7 +339,6 @@ use Symplify\CodingStandard\Fixer\Annotation\RemoveMethodNameDuplicateDescriptio
 use Symplify\CodingStandard\Fixer\Annotation\RemovePHPStormAnnotationFixer;
 use Symplify\CodingStandard\Fixer\Annotation\RemovePropertyVariableNameDescriptionFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
-use Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
@@ -770,9 +770,11 @@ abstract class AbstractConfigSet
             PhpdocIndentFixer::class => true,
             PhpdocInlineTagNormalizerFixer::class => true,
             PhpdocLineSpanFixer::class => [
+                'case' => 'single',
                 'const' => 'single',
-                'property' => 'multi',
+                'function' => 'multi',
                 'method' => 'multi',
+                'property' => 'multi',
             ],
             PhpdocListTypeFixer::class => true,
             PhpdocNoAccessFixer::class => true,
@@ -1060,7 +1062,8 @@ abstract class AbstractConfigSet
             RemoveMethodNameDuplicateDescriptionFixer::class => true,
             RemovePHPStormAnnotationFixer::class => true,
             RemovePropertyVariableNameDescriptionFixer::class => true,
-            ParamReturnAndVarTagMalformsFixer::class => true,
+            // Deprecated on symplify/coding-standard 13.1, superseded by the docblock rules on ConfigSet84
+            'Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer' => true,
             RemoveUselessDefaultCommentFixer::class => true,
             StandaloneLineInMultilineArrayFixer::class => true,
             StandaloneLinePromotedPropertyFixer::class => true,
@@ -1195,6 +1198,10 @@ abstract class AbstractConfigSet
             UselessParenthesesSniff::class => true,
             UselessSemicolonSniff::class => true,
         ];
+
+        if ($this->isMinSlevomatVersion('8.28')) {
+            $rules[TraitUseOrderSniff::class] = true;
+        }
 
         if ($this->typeInfer) {
             $rules = array_merge(
@@ -1370,6 +1377,16 @@ abstract class AbstractConfigSet
     final protected function isMaxCodeSnifferVersion(string $version): bool
     {
         return version_compare(self::getCodeSnifferVersion(), $version, self::COMPARISON_MAX);
+    }
+
+    final protected function isMinSymplifyVersion(string $version): bool
+    {
+        return $this->libVersionCompare('symplify/coding-standard', $version, self::COMPARISON_MIN);
+    }
+
+    final protected function isMaxSymplifyVersion(string $version): bool
+    {
+        return $this->libVersionCompare('symplify/coding-standard', $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinSlevomatVersion(string $version): bool
