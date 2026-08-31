@@ -1,7 +1,7 @@
 <?php
 
 /*
- * (c) 2021-2025 Julián Gutiérrez <juliangut@gmail.com>
+ * (c) 2021-2026 Julián Gutiérrez <juliangut@gmail.com>
  *
  * @license BSD-3-Clause
  * @link https://github.com/juliangut/easy-coding-standard-config
@@ -1260,7 +1260,7 @@ abstract class AbstractConfigSet
             $this->header,
         );
 
-        return trim($header) !== '' ? trim($header) : null;
+        return mb_trim($header) !== '' ? mb_trim($header) : null;
     }
 
     private function getRootPackage(): string
