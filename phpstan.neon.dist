@@ -11,10 +11,17 @@ parameters:
     - tests
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
-  # Rules behind a package version gate are not installed on every supported dependency set
-  reportUnmatchedIgnoredErrors: false
   ignoreErrors:
-    - message: '/^Class (Symplify\\CodingStandard\\Fixer\\Commenting|SlevomatCodingStandard\\Sniffs\\Classes)\\\w+ not found\.$/'
+    # Rules behind a package version gate are not installed on every supported dependency set
+    - identifier: class.notFound
+      paths:
+        - src/AbstractConfigSet.php
+        - src/ConfigSet84.php
+      reportUnmatched: false
     - message: '/^Method Jgut\\ECS\\Config\\\w+::get(Slevomat|Symplify)\w+\(\) should return array<class-string</'
+      identifier: return.type
+      reportUnmatched: false
     # The running php-cs-fixer version is read from the tool itself, whose Application class is @internal
-    - message: '/^Access to constant VERSION of internal class PhpCsFixer\\Console\\Application/'
+    - identifier: classConstant.internalClass
+      path: src/AbstractConfigSet.php
+      reportUnmatched: false
