@@ -354,9 +354,9 @@ use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
  * @phpstan-type PhpCsFixerRuleList array<class-string<FixerInterface>, array<string, mixed>|bool>
  * @phpstan-type PhpCodeSnifferRuleList array<class-string<Sniff>, array<string, mixed>|bool>
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(ExcessiveClassLength)
+ * @SuppressWarnings(CouplingBetweenObjects)
+ * @SuppressWarnings(ExcessiveClassComplexity)
  */
 abstract class AbstractConfigSet
 {
@@ -508,9 +508,9 @@ abstract class AbstractConfigSet
     /**
      * @return PhpCsFixerRuleList
      *
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(ExcessiveMethodLength)
+     * @SuppressWarnings(CyclomaticComplexity)
+     * @SuppressWarnings(NPathComplexity)
      */
     private function getPhpCsFixerRules(): array
     {
@@ -1351,12 +1351,12 @@ abstract class AbstractConfigSet
 
     final protected function isMinPhpCsFixerVersion(string $version): bool
     {
-        return version_compare(self::getPhpCsFixerVersion(), $version, self::COMPARISON_MIN);
+        return version_compare($this->getPhpCsFixerVersion(), $version, self::COMPARISON_MIN);
     }
 
     final protected function isMaxPhpCsFixerVersion(string $version): bool
     {
-        return version_compare(self::getPhpCsFixerVersion(), $version, self::COMPARISON_MAX);
+        return version_compare($this->getPhpCsFixerVersion(), $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinKubawerlosVersion(string $version): bool
@@ -1371,12 +1371,12 @@ abstract class AbstractConfigSet
 
     final protected function isMinCodeSnifferVersion(string $version): bool
     {
-        return version_compare(self::getCodeSnifferVersion(), $version, self::COMPARISON_MIN);
+        return version_compare($this->getCodeSnifferVersion(), $version, self::COMPARISON_MIN);
     }
 
     final protected function isMaxCodeSnifferVersion(string $version): bool
     {
-        return version_compare(self::getCodeSnifferVersion(), $version, self::COMPARISON_MAX);
+        return version_compare($this->getCodeSnifferVersion(), $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinSymplifyVersion(string $version): bool
@@ -1402,27 +1402,35 @@ abstract class AbstractConfigSet
     /**
      * Versions of the running php-cs-fixer and php_codesniffer are taken from the copies bundled into
      * easy-coding-standard, which are the ones actually performing the checks, and not from the root vendor.
+     * Outside of an easy-coding-standard run those classes are not loadable, fall back to the root vendor.
      */
-    private static function getPhpCsFixerVersion(): string
+    private function getPhpCsFixerVersion(): string
     {
-        return self::normalizeVersion(Application::VERSION);
+        return class_exists(Application::class)
+            ? self::normalizeVersion(Application::VERSION)
+            : $this->getInstalledVersion('friendsofphp/php-cs-fixer') ?? '0.0.0';
     }
 
-    private static function getCodeSnifferVersion(): string
+    private function getCodeSnifferVersion(): string
     {
-        return self::normalizeVersion(Config::VERSION);
+        return class_exists(Config::class)
+            ? self::normalizeVersion(Config::VERSION)
+            : $this->getInstalledVersion('squizlabs/php_codesniffer') ?? '0.0.0';
     }
 
     private function libVersionCompare(string $library, string $comparisonVersion, string $comparison): bool
     {
+        $version = $this->getInstalledVersion($library);
+
+        return $version !== null && version_compare($version, $comparisonVersion, $comparison);
+    }
+
+    private function getInstalledVersion(string $library): ?string
+    {
         $installedPackage = $this->getInstalledPackages()['versions'][$library] ?? null;
         $version = $installedPackage['pretty_version'] ?? $installedPackage['version'] ?? null;
 
-        if (!\is_string($version)) {
-            return false;
-        }
-
-        return version_compare(self::normalizeVersion($version), $comparisonVersion, $comparison);
+        return \is_string($version) ? self::normalizeVersion($version) : null;
     }
 
     private static function normalizeVersion(string $version): string

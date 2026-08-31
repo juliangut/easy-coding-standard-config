@@ -45,3 +45,11 @@ qa:
 	make --no-print-directory qa-phpmnd && \
 	make --no-print-directory qa-compatibility && \
 	make --no-print-directory qa-phpstan
+
+.PHONY: test-phpunit
+test-phpunit:
+	vendor/bin/phpunit
+
+.PHONY: test
+test:
+	make --no-print-directory test-phpunit

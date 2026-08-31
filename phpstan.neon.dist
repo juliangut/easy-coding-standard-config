@@ -1,5 +1,5 @@
 includes:
-  - %rootDir%/../../juliangut/phpstan-config/phpstan.neon
+  - %rootDir%/../../juliangut/phpstan-config/phpstan-phpunit.neon
 
 parameters:
   level: max
@@ -8,5 +8,13 @@ parameters:
   paths:
     - ecs.php
     - src
+    - tests
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
+  # Rules behind a package version gate are not installed on every supported dependency set
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    - message: '/^Class (Symplify\\CodingStandard\\Fixer\\Commenting|SlevomatCodingStandard\\Sniffs\\Classes)\\\w+ not found\.$/'
+    - message: '/^Method Jgut\\ECS\\Config\\\w+::get(Slevomat|Symplify)\w+\(\) should return array<class-string</'
+    # The running php-cs-fixer version is read from the tool itself, whose Application class is @internal
+    - message: '/^Access to constant VERSION of internal class PhpCsFixer\\Console\\Application/'

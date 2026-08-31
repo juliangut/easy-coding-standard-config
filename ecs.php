@@ -23,6 +23,7 @@ $configSet = (new ConfigSet82())
 $paths = [
     __FILE__,
     __DIR__ . '/src',
+    __DIR__ . '/tests',
 ];
 
 return $configSet

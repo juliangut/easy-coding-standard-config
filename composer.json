@@ -20,13 +20,14 @@
     "require": {
         "php": "^8.2",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
-        "juliangut/php-codesniffer-custom-sniffs": "^1.2",
-        "juliangut/php-cs-fixer-custom-fixers": "^1.1.1",
+        "juliangut/php-codesniffer-custom-sniffs": "^1.2.1",
+        "juliangut/php-cs-fixer-custom-fixers": "^1.1.2",
         "kubawerlos/php-cs-fixer-custom-fixers": "^3.35",
         "lcobucci/clock": "^3.0",
         "nikic/php-parser": "^4.19|^5.3",
         "pedrotroller/php-cs-custom-fixer": "^2.34",
         "slevomat/coding-standard": "^8.22",
+        "symfony/polyfill-mbstring": "^1.31",
         "symplify/coding-standard": "^13.0",
         "symplify/easy-coding-standard": "^13.2"
     },
@@ -34,7 +35,9 @@
         "juliangut/phpstan-config": "^1.2",
         "overtrue/phplint": "^9.0",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
-        "phpmd/phpmd": "^2.15",
+        "phpmd/phpmd": "^2.14",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^10.5",
         "povils/phpmnd": "^3.5",
         "roave/security-advisories": "dev-master"
     },
@@ -44,6 +47,9 @@
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "Jgut\\ECS\\Tests\\": "tests/"
+        }
     },
     "config": {
         "preferred-install": "dist",

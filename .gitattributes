@@ -7,5 +7,7 @@
 .phplint.yml      export-ignore
 ecs.php           export-ignore
 phpstan.neon.dist export-ignore
+phpunit.xml.dist  export-ignore
+tests/            export-ignore
 Makefile          export-ignore
 CONTRIBUTING.md   export-ignore
