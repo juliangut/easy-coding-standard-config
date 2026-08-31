@@ -10,6 +10,3 @@ parameters:
     - src
   scanDirectories:
     - vendor/squizlabs/php_codesniffer/src
-  ignoreErrors:
-    - message: '/^Call to static method (getRootPackage|getPrettyVersion)\(\) on an unknown class Composer\\InstalledVersions\./'
-      path: src/AbstractConfigSet.php

@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Jgut\ECS\Config;
 
-use Composer\InstalledVersions;
 use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\LeadingUppercaseCommentFixer;
 use Jgut\PhpCsFixerCustomFixers\Fixer\Comment\PhpdocLeadingUppercaseSummaryFixer;
 use Jgut\PhpCsFixerCustomFixers\Fixer\LanguageConstruct\FloatLeadingZeroFixer;
@@ -22,6 +21,7 @@ use Lcobucci\Clock\SystemClock;
 use PedroTroller\CS\Fixer\CodingStyle\ExceptionsPunctuationFixer;
 use PedroTroller\CS\Fixer\CodingStyle\LineBreakBetweenMethodArgumentsFixer;
 use PedroTroller\CS\Fixer\Comment\CommentLineToPhpdocBlockFixer;
+use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\ForLoopWithTestFunctionCallSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\JumbledIncrementerSniff;
@@ -31,7 +31,6 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UnnecessaryFinalModifi
 use PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\FixmeSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\OneObjectStructurePerFileSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\NestingLevelSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\UpperCaseConstantNameSniff;
@@ -47,6 +46,7 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentThrowTagSni
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP\CommentedOutCodeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MemberVarScopeSniff;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\StaticThisUsageSniff;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\Alias\ArrayPushFixer;
 use PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer;
 use PhpCsFixer\Fixer\Alias\EregToPregFixer;
@@ -61,6 +61,7 @@ use PhpCsFixer\Fixer\Alias\SetTypeToCastFixer;
 use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
+use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceInEmptyArrayFixer;
 use PhpCsFixer\Fixer\ArrayNotation\ReturnToYieldFromFixer;
 use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
 use PhpCsFixer\Fixer\ArrayNotation\WhitespaceAfterCommaInArrayFixer;
@@ -86,8 +87,10 @@ use PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer;
 use PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
+use PhpCsFixer\Fixer\ClassNotation\ModifierKeywordsFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoNullPropertyInitializationFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer;
+use PhpCsFixer\Fixer\ClassNotation\NoRedundantReadonlyPropertyFixer;
 use PhpCsFixer\Fixer\ClassNotation\NoUnneededFinalMethodFixer;
 use PhpCsFixer\Fixer\ClassNotation\OrderedTypesFixer;
 use PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer;
@@ -96,6 +99,7 @@ use PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer;
 use PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer;
 use PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
 use PhpCsFixer\Fixer\ClassNotation\SingleTraitInsertPerStatementFixer;
+use PhpCsFixer\Fixer\ClassNotation\StringableForToStringFixer;
 use PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer;
@@ -194,6 +198,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocLineSpanFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocNoDuplicateTypesFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer;
@@ -283,7 +288,6 @@ use PhpCsFixerCustomFixers\Fixer\PhpdocSelfAccessorFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocTypesCommaSpacesFixer;
 use PhpCsFixerCustomFixers\Fixer\PhpdocTypesTrimFixer;
 use PhpCsFixerCustomFixers\Fixer\PromotedConstructorPropertyFixer;
-use PhpCsFixerCustomFixers\Fixer\StringableInterfaceFixer;
 use RuntimeException;
 use SlevomatCodingStandard\Sniffs\Arrays\ArrayAccessSniff;
 use SlevomatCodingStandard\Sniffs\Arrays\DisallowImplicitArrayCreationSniff;
@@ -376,6 +380,11 @@ abstract class AbstractConfigSet
      * @var array<ECSRuleClass|int<0, max>, ECSRuleClass|list<string>|null>
      */
     private array $additionalSkips = [];
+
+    /**
+     * @var array{root: array{name: string}, versions: array<string, array<string, mixed>>}|null
+     */
+    private ?array $installedPackages = null;
 
     public function __construct()
     {
@@ -633,6 +642,7 @@ abstract class AbstractConfigSet
             MethodChainingIndentationFixer::class => true,
             ModernizeStrposFixer::class => true,
             ModernizeTypesCastingFixer::class => true,
+            ModifierKeywordsFixer::class => true,
             MultilineCommentOpeningClosingFixer::class => true,
             MultilinePromotedPropertiesFixer::class => true,
             MultilineStringToHeredocFixer::class => true,
@@ -686,6 +696,7 @@ abstract class AbstractConfigSet
             NoMultipleStatementsPerLineFixer::class => true,
             NoNullPropertyInitializationFixer::class => true,
             NoPhp4ConstructorFixer::class => true,
+            NoRedundantReadonlyPropertyFixer::class => true,
             NoShortBoolCastFixer::class => true,
             NoSinglelineWhitespaceBeforeSemicolonsFixer::class => true,
             NoSpaceAroundDoubleColonFixer::class => true,
@@ -723,6 +734,7 @@ abstract class AbstractConfigSet
                 'after_heredoc' => true,
             ],
             NoWhitespaceInBlankLineFixer::class => true,
+            NoWhitespaceInEmptyArrayFixer::class => true,
             NonPrintableCharacterFixer::class => [
                 'use_escape_sequences_in_strings' => false,
             ],
@@ -765,6 +777,7 @@ abstract class AbstractConfigSet
             PhpdocListTypeFixer::class => true,
             PhpdocNoAccessFixer::class => true,
             PhpdocNoAliasTagFixer::class => true,
+            PhpdocNoDuplicateTypesFixer::class => true,
             PhpdocNoEmptyReturnFixer::class => true,
             PhpdocNoPackageFixer::class => true,
             PhpdocNoUselessInheritdocFixer::class => true,
@@ -845,6 +858,7 @@ abstract class AbstractConfigSet
             StaticLambdaFixer::class => true,
             StrictComparisonFixer::class => true,
             StrictParamFixer::class => true,
+            StringableForToStringFixer::class => true,
             StringImplicitBackslashesFixer::class => true,
             StringLengthToEmptyFixer::class => true,
             StringLineEndingFixer::class => true,
@@ -862,6 +876,8 @@ abstract class AbstractConfigSet
             ],
             UnaryOperatorSpacesFixer::class => true,
             UseArrowFunctionsFixer::class => true,
+            // Deprecated in favour of ModifierKeywordsFixer, comes from the PSR-12 set
+            'PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer' => false,
             VoidReturnFixer::class => true,
             WhitespaceAfterCommaInArrayFixer::class => [
                 'ensure_single_space' => true,
@@ -1000,7 +1016,6 @@ abstract class AbstractConfigSet
             PromotedConstructorPropertyFixer::class => [
                 'promote_only_existing_properties' => false,
             ],
-            StringableInterfaceFixer::class => true,
         ];
 
         if ($this->doctrine) {
@@ -1038,7 +1053,7 @@ abstract class AbstractConfigSet
     {
         return [
             LineLengthFixer::class => [
-                'lineLength' => 120,
+                'line_length' => 120,
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
@@ -1087,11 +1102,6 @@ abstract class AbstractConfigSet
             ],
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
-            LineLengthSniff::class => [
-                'lineLimit' => 120,
-                'absoluteLineLimit' => 120,
-                'ignoreComments' => true,
-            ],
             JumbledIncrementerSniff::class => true,
             MemberVarScopeSniff::class => true,
             NestingLevelSniff::class => [
@@ -1265,22 +1275,40 @@ abstract class AbstractConfigSet
 
     private function getRootPackage(): string
     {
-        $dir = __DIR__;
-        while ($dir !== '/') {
-            if (file_exists($dir . '/vendor/composer/InstalledVersions.php')) {
-                require_once $dir . '/vendor/composer/InstalledVersions.php';
+        return $this->getInstalledPackages()['root']['name'];
+    }
 
-                break;
+    /**
+     * Composer installed packages are read from the file directly, as Composer\InstalledVersions gets
+     * shadowed by the copy bundled into easy-coding-standard when running inside of it.
+     *
+     * @throws RuntimeException
+     *
+     * @return array{root: array{name: string}, versions: array<string, array<string, mixed>>}
+     */
+    private function getInstalledPackages(): array
+    {
+        if ($this->installedPackages === null) {
+            $dir = __DIR__;
+            while ($dir !== '/') {
+                if (file_exists($dir . '/vendor/composer/installed.php')) {
+                    /** @var array{root: array{name: string}, versions: array<string, array<string, mixed>>} $installedPackages */
+                    $installedPackages = require $dir . '/vendor/composer/installed.php';
+
+                    $this->installedPackages = $installedPackages;
+
+                    break;
+                }
+
+                $dir = \dirname($dir);
             }
 
-            $dir = \dirname($dir);
+            if ($this->installedPackages === null) {
+                throw new RuntimeException('Composer installed packages file could not be found.');
+            }
         }
 
-        if ($dir === '/') {
-            throw new RuntimeException('Composer installed versions file could not be found.');
-        }
-
-        return InstalledVersions::getRootPackage()['name'];
+        return $this->installedPackages;
     }
 
     final public function enablePhpUnitRules(bool $phpUnit = true): self
@@ -1306,7 +1334,7 @@ abstract class AbstractConfigSet
 
     final protected function isMinPhpVersion(string $version): bool
     {
-        return version_compare(\PHP_VERSION, $version, self::COMPARISON_MAX);
+        return version_compare(\PHP_VERSION, $version, self::COMPARISON_MIN);
     }
 
     final protected function isMaxPhpVersion(string $version): bool
@@ -1316,12 +1344,12 @@ abstract class AbstractConfigSet
 
     final protected function isMinPhpCsFixerVersion(string $version): bool
     {
-        return $this->libVersionCompare('friendsofphp/php-cs-fixer', $version, self::COMPARISON_MIN);
+        return version_compare(self::getPhpCsFixerVersion(), $version, self::COMPARISON_MIN);
     }
 
     final protected function isMaxPhpCsFixerVersion(string $version): bool
     {
-        return $this->libVersionCompare('friendsofphp/php-cs-fixer', $version, self::COMPARISON_MAX);
+        return version_compare(self::getPhpCsFixerVersion(), $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinKubawerlosVersion(string $version): bool
@@ -1336,12 +1364,12 @@ abstract class AbstractConfigSet
 
     final protected function isMinCodeSnifferVersion(string $version): bool
     {
-        return $this->libVersionCompare('squizlabs/php_codesniffer', $version, self::COMPARISON_MIN);
+        return version_compare(self::getCodeSnifferVersion(), $version, self::COMPARISON_MIN);
     }
 
     final protected function isMaxCodeSnifferVersion(string $version): bool
     {
-        return $this->libVersionCompare('squizlabs/php_codesniffer', $version, self::COMPARISON_MAX);
+        return version_compare(self::getCodeSnifferVersion(), $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinSlevomatVersion(string $version): bool
@@ -1354,11 +1382,34 @@ abstract class AbstractConfigSet
         return $this->libVersionCompare('slevomat/coding-standard', $version, self::COMPARISON_MAX);
     }
 
+    /**
+     * Versions of the running php-cs-fixer and php_codesniffer are taken from the copies bundled into
+     * easy-coding-standard, which are the ones actually performing the checks, and not from the root vendor.
+     */
+    private static function getPhpCsFixerVersion(): string
+    {
+        return self::normalizeVersion(Application::VERSION);
+    }
+
+    private static function getCodeSnifferVersion(): string
+    {
+        return self::normalizeVersion(Config::VERSION);
+    }
+
     private function libVersionCompare(string $library, string $comparisonVersion, string $comparison): bool
     {
-        /** @var string $version */
-        $version = preg_replace('/^v/', '', InstalledVersions::getPrettyVersion($library) ?? '');
+        $installedPackage = $this->getInstalledPackages()['versions'][$library] ?? null;
+        $version = $installedPackage['pretty_version'] ?? $installedPackage['version'] ?? null;
 
-        return version_compare($version, $comparisonVersion, $comparison);
+        if (!\is_string($version)) {
+            return false;
+        }
+
+        return version_compare(self::normalizeVersion($version), $comparisonVersion, $comparison);
+    }
+
+    private static function normalizeVersion(string $version): string
+    {
+        return str_starts_with($version, 'v') ? mb_substr($version, 1) : $version;
     }
 }
