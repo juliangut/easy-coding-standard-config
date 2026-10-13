@@ -35,7 +35,7 @@
         "juliangut/phpstan-config": "dev-master",
         "overtrue/phplint": "^9.0",
         "phpcompatibility/php-compatibility": "^10.0@alpha",
-        "phpmd/phpmd": "^2.14",
+        "phpmd/phpmd": "^3.0",
         "phpunit/phpunit": "^10.5",
         "povils/phpmnd": "^3.5",
         "roave/security-advisories": "dev-master"
