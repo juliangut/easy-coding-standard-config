@@ -28,8 +28,7 @@
         "pedrotroller/php-cs-custom-fixer": "^2.34",
         "slevomat/coding-standard": "^8.22",
         "symfony/polyfill-mbstring": "^1.31",
-        "symplify/coding-standard": "^13.0",
-        "symplify/easy-coding-standard": "^13.2"
+        "symplify/easy-coding-standard": "^13.3.16"
     },
     "require-dev": {
         "juliangut/phpstan-config": "dev-master",

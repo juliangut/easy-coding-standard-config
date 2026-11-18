@@ -339,7 +339,17 @@ use Symplify\CodingStandard\Fixer\Annotation\RemoveMethodNameDuplicateDescriptio
 use Symplify\CodingStandard\Fixer\Annotation\RemovePHPStormAnnotationFixer;
 use Symplify\CodingStandard\Fixer\Annotation\RemovePropertyVariableNameDescriptionFixer;
 use Symplify\CodingStandard\Fixer\ArrayNotation\StandaloneLineInMultilineArrayFixer;
+use Symplify\CodingStandard\Fixer\Commenting\AddMissingParamNameFixer;
+use Symplify\CodingStandard\Fixer\Commenting\AddMissingVarNameFixer;
+use Symplify\CodingStandard\Fixer\Commenting\DoubleAsteriskInlineVarFixer;
+use Symplify\CodingStandard\Fixer\Commenting\FixParamNameTypoFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveDeadParamFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveParamNameReferenceFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousReturnNameFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousVarNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
+use Symplify\CodingStandard\Fixer\Commenting\SingleLineInlineVarDocBlockFixer;
+use Symplify\CodingStandard\Fixer\Commenting\SwitchedTypeAndNameFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
@@ -1054,19 +1064,27 @@ abstract class AbstractConfigSet
     private function getSymplifyFixerRules(): array
     {
         return [
+            AddMissingParamNameFixer::class => true,
+            AddMissingVarNameFixer::class => true,
+            DoubleAsteriskInlineVarFixer::class => true,
+            FixParamNameTypoFixer::class => true,
             LineLengthFixer::class => [
                 'line_length' => 120,
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
+            RemoveDeadParamFixer::class => true,
             RemoveMethodNameDuplicateDescriptionFixer::class => true,
+            RemoveParamNameReferenceFixer::class => true,
             RemovePHPStormAnnotationFixer::class => true,
             RemovePropertyVariableNameDescriptionFixer::class => true,
-            // Deprecated on symplify/coding-standard 13.1, superseded by the docblock rules on ConfigSet84
-            'Symplify\CodingStandard\Fixer\Commenting\ParamReturnAndVarTagMalformsFixer' => true,
+            RemoveSuperfluousReturnNameFixer::class => true,
+            RemoveSuperfluousVarNameFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
+            SingleLineInlineVarDocBlockFixer::class => true,
             StandaloneLineInMultilineArrayFixer::class => true,
             StandaloneLinePromotedPropertyFixer::class => true,
+            SwitchedTypeAndNameFixer::class => true,
         ];
     }
 
@@ -1377,16 +1395,6 @@ abstract class AbstractConfigSet
     final protected function isMaxCodeSnifferVersion(string $version): bool
     {
         return version_compare($this->getCodeSnifferVersion(), $version, self::COMPARISON_MAX);
-    }
-
-    final protected function isMinSymplifyVersion(string $version): bool
-    {
-        return $this->libVersionCompare('symplify/coding-standard', $version, self::COMPARISON_MIN);
-    }
-
-    final protected function isMaxSymplifyVersion(string $version): bool
-    {
-        return $this->libVersionCompare('symplify/coding-standard', $version, self::COMPARISON_MAX);
     }
 
     final protected function isMinSlevomatVersion(string $version): bool
