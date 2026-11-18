@@ -15,6 +15,7 @@ use Jgut\ECS\Config\AbstractConfigSet;
 use Jgut\ECS\Config\ConfigSet82;
 use Jgut\ECS\Config\ConfigSet83;
 use Jgut\ECS\Config\ConfigSet84;
+use Jgut\ECS\Config\ConfigSet85;
 use Lcobucci\Clock\SystemClock;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -35,6 +36,7 @@ final class ConfigSetTest extends TestCase
         yield 'ConfigSet82' => [ConfigSet82::class, '8.2.0'];
         yield 'ConfigSet83' => [ConfigSet83::class, '8.3.0'];
         yield 'ConfigSet84' => [ConfigSet84::class, '8.4.0'];
+        yield 'ConfigSet85' => [ConfigSet85::class, '8.5.0'];
     }
 
     /**

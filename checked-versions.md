@@ -12,11 +12,7 @@ Latest version of each rule provider whose rules have been reviewed against the 
 **Fixers:**
 - kubawerlos/php-cs-fixer-custom-fixers 3.37.5
 - pedrotroller/php-cs-custom-fixer 2.35 — requires PHP >= 8.3 and adds no fixers over 2.34
-- Symplify fixers (bundled by ECS) — ECS 13.3.16 drops ParamReturnAndVarTagMalformsFixer for its successors,
-  all in use. Not yet reviewed: RemoveEventSubscriberDescription, FixTagTypo, MergeDocBlockStart,
-  RemoveDeadVarThis, TypeToVarTag, NoBlankLineBetweenImports, StandaloneLinePlainConstructorParam,
-  StandaloneLineRequiredParam, StandaloneLineSymfonyAttributeParam, RemoveParamDescriptionDuplicateName
-  (ECS 13.3.3) and RemoveSlashFromNativeConstant (ECS 13.3.11)
+- Symplify fixers (bundled by ECS 13.3.21)
 
 **Sniffs:**
-- slevomat/coding-standard 8.31.3 — 8.23 and up require php_codesniffer 4, so they need ECS 13
+- slevomat/coding-standard 8.31.3

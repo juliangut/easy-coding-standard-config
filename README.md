@@ -42,6 +42,7 @@ return (new ConfigSet82())
 
 Use one of the provided configurations depending on the PHP version you want to support:
 
+* `Jgut\ECS\Config\ConfigSet85`, PHP >= 8.5
 * `Jgut\ECS\Config\ConfigSet84`, PHP >= 8.4
 * `Jgut\ECS\Config\ConfigSet83`, PHP >= 8.3
 * `Jgut\ECS\Config\ConfigSet82`, PHP >= 8.2

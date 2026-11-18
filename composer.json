@@ -26,7 +26,7 @@
         "lcobucci/clock": "^3.0",
         "nikic/php-parser": "^4.19|^5.3",
         "pedrotroller/php-cs-custom-fixer": "^2.34",
-        "slevomat/coding-standard": "^8.22",
+        "slevomat/coding-standard": "^8.23",
         "symfony/polyfill-mbstring": "^1.31",
         "symplify/easy-coding-standard": "^13.3.16"
     },
@@ -38,6 +38,7 @@
         "phpunit/phpunit": "^11.5|^12.5|^13.4",
         "povils/phpmnd": "^3.5",
         "roave/security-advisories": "dev-master",
+        "symfony/polyfill-php84": "^1.38.1",
         "symfony/string": "^7.3|^8.0"
     },
     "autoload": {

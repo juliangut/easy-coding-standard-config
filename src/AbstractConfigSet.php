@@ -260,6 +260,7 @@ use PhpCsFixer\Fixer\StringNotation\StringLengthToEmptyFixer;
 use PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer;
 use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
+use PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer;
 use PhpCsFixer\Fixer\Whitespace\HeredocIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer;
 use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
@@ -343,15 +344,20 @@ use Symplify\CodingStandard\Fixer\Commenting\AddMissingParamNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\AddMissingVarNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\DoubleAsteriskInlineVarFixer;
 use Symplify\CodingStandard\Fixer\Commenting\FixParamNameTypoFixer;
+use Symplify\CodingStandard\Fixer\Commenting\FixTagTypoFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveDeadParamFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveDeadVarThisFixer;
+use Symplify\CodingStandard\Fixer\Commenting\RemoveParamDescriptionDuplicateNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveParamNameReferenceFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousReturnNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveSuperfluousVarNameFixer;
 use Symplify\CodingStandard\Fixer\Commenting\RemoveUselessDefaultCommentFixer;
 use Symplify\CodingStandard\Fixer\Commenting\SingleLineInlineVarDocBlockFixer;
 use Symplify\CodingStandard\Fixer\Commenting\SwitchedTypeAndNameFixer;
+use Symplify\CodingStandard\Fixer\ConstantNotation\RemoveSlashFromNativeConstantFixer;
 use Symplify\CodingStandard\Fixer\LineLength\LineLengthFixer;
 use Symplify\CodingStandard\Fixer\Spacing\MethodChainingNewlineFixer;
+use Symplify\CodingStandard\Fixer\Spacing\NoBlankLineBetweenImportsFixer;
 use Symplify\CodingStandard\Fixer\Spacing\StandaloneLinePromotedPropertyFixer;
 use Symplify\CodingStandard\Fixer\Strict\BlankLineAfterStrictTypesFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
@@ -535,16 +541,17 @@ abstract class AbstractConfigSet
                 'syntax' => 'short',
             ],
             AssignNullCoalescingToCoalesceEqualFixer::class => true,
-            BracesPositionFixer::class => true,
-            BacktickToShellExecFixer::class => true,
-            BlankLineAfterStrictTypesFixer::class => true,
             AttributeEmptyParenthesesFixer::class => true,
+            BacktickToShellExecFixer::class => true,
             BinaryOperatorSpacesFixer::class => [
                 'default' => 'single_space',
             ],
+            BlankLineAfterStrictTypesFixer::class => true,
             BlankLineBeforeStatementFixer::class => [
                 'statements' => ['case', 'continue', 'declare', 'default', 'return', 'throw', 'try'],
             ],
+            BlankLineBetweenImportGroupsFixer::class => true,
+            BracesPositionFixer::class => true,
             CastSpacesFixer::class => [
                 'space' => 'single',
             ],
@@ -633,10 +640,10 @@ abstract class AbstractConfigSet
             IntegerLiteralCaseFixer::class => true,
             IsNullFixer::class => true,
             LambdaNotUsedImportFixer::class => true,
+            LinebreakAfterOpeningTagFixer::class => true,
             ListSyntaxFixer::class => [
                 'syntax' => 'short',
             ],
-            LinebreakAfterOpeningTagFixer::class => true,
             LogicalOperatorsFixer::class => true,
             LongToShorthandOperatorFixer::class => true,
             LowercaseStaticReferenceFixer::class => true,
@@ -704,9 +711,13 @@ abstract class AbstractConfigSet
                 'use' => 'echo',
             ],
             NoMultipleStatementsPerLineFixer::class => true,
+            NonPrintableCharacterFixer::class => [
+                'use_escape_sequences_in_strings' => false,
+            ],
             NoNullPropertyInitializationFixer::class => true,
             NoPhp4ConstructorFixer::class => true,
             NoRedundantReadonlyPropertyFixer::class => true,
+            NormalizeIndexBraceFixer::class => true,
             NoShortBoolCastFixer::class => true,
             NoSinglelineWhitespaceBeforeSemicolonsFixer::class => true,
             NoSpaceAroundDoubleColonFixer::class => true,
@@ -745,10 +756,6 @@ abstract class AbstractConfigSet
             ],
             NoWhitespaceInBlankLineFixer::class => true,
             NoWhitespaceInEmptyArrayFixer::class => true,
-            NonPrintableCharacterFixer::class => [
-                'use_escape_sequences_in_strings' => false,
-            ],
-            NormalizeIndexBraceFixer::class => true,
             NullableTypeDeclarationFixer::class => [
                 'syntax' => 'question_mark',
             ],
@@ -907,6 +914,7 @@ abstract class AbstractConfigSet
             $rules = array_merge(
                 $rules,
                 [
+                    PhpUnitAssertNewNamesFixer::class => true,
                     PhpUnitAttributesFixer::class => true,
                     PhpUnitConstructFixer::class => [
                         'assertions' => ['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame'],
@@ -964,10 +972,6 @@ abstract class AbstractConfigSet
                     // PhpUnitTestClassRequiresCoversFixer::class => true,
                 ],
             );
-
-            if ($this->isMinPhpCsFixerVersion('3.60.0')) {
-                $rules[PhpUnitAssertNewNamesFixer::class] = true;
-            }
         }
 
         if ($this->doctrine) {
@@ -1068,16 +1072,21 @@ abstract class AbstractConfigSet
             AddMissingVarNameFixer::class => true,
             DoubleAsteriskInlineVarFixer::class => true,
             FixParamNameTypoFixer::class => true,
+            FixTagTypoFixer::class => true,
             LineLengthFixer::class => [
                 'line_length' => 120,
                 'inline_short_lines' => false,
             ],
             MethodChainingNewlineFixer::class => true,
+            NoBlankLineBetweenImportsFixer::class => true,
             RemoveDeadParamFixer::class => true,
+            RemoveDeadVarThisFixer::class => true,
             RemoveMethodNameDuplicateDescriptionFixer::class => true,
+            RemoveParamDescriptionDuplicateNameFixer::class => true,
             RemoveParamNameReferenceFixer::class => true,
             RemovePHPStormAnnotationFixer::class => true,
             RemovePropertyVariableNameDescriptionFixer::class => true,
+            RemoveSlashFromNativeConstantFixer::class => true,
             RemoveSuperfluousReturnNameFixer::class => true,
             RemoveSuperfluousVarNameFixer::class => true,
             RemoveUselessDefaultCommentFixer::class => true,
@@ -1105,14 +1114,13 @@ abstract class AbstractConfigSet
      */
     private function getPhpCodeSnifferRules(): array
     {
-        $rules = [
+        return [
             CommentedOutCodeSniff::class => [
                 'maxPercentage' => 70,
             ],
             DeprecatedFunctionsSniff::class => true,
             DisallowRequestSuperglobalSniff::class => true,
             FixmeSniff::class => true,
-            ForLoopWithTestFunctionCallSniff::class => true,
             ForbiddenFunctionsSniff::class => [
                 'forbiddenFunctions' => [
                     'sizeof' => 'count',
@@ -1121,8 +1129,10 @@ abstract class AbstractConfigSet
                     'die' => null,
                 ],
             ],
+            ForLoopWithTestFunctionCallSniff::class => true,
             FunctionCommentThrowTagSniff::class => true,
             GitMergeConflictSniff::class => true,
+            HereNowdocIdentifierSpacingSniff::class => true,
             JumbledIncrementerSniff::class => true,
             MemberVarScopeSniff::class => true,
             NestingLevelSniff::class => [
@@ -1137,19 +1147,13 @@ abstract class AbstractConfigSet
             TodoSniff::class => true,
             UnconditionalIfStatementSniff::class => true,
             UnnecessaryFinalModifierSniff::class => true,
+            UnnecessaryHeredocSniff::class => true,
             UnnecessaryStringConcatSniff::class => [
                 'allowMultiline' => true,
             ],
             UpperCaseConstantNameSniff::class => true,
             UselessOverridingMethodSniff::class => true,
         ];
-
-        if ($this->isMinCodeSnifferVersion('3.11.0')) {
-            $rules[HereNowdocIdentifierSpacingSniff::class] = true;
-            $rules[UnnecessaryHeredocSniff::class] = true;
-        }
-
-        return $rules;
     }
 
     /**
