@@ -1,4 +1,4 @@
 !.gitignore
 composer.lock
 vendor/
-*.cache
+/tools/.*.cache

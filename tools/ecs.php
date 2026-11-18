@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 use Jgut\ECS\Config\ConfigSet82;
 
+$root = __DIR__ . '/..';
+
 $configSet = (new ConfigSet82())
     ->setHeader(<<<'HEADER'
     (c) 2021-{{year}} Julián Gutiérrez <juliangut@gmail.com>
@@ -20,12 +22,14 @@ $configSet = (new ConfigSet82())
     HEADER)
     ->enablePhpUnitRules()
     ->enableDoctrineRules();
+
 $paths = [
     __FILE__,
-    __DIR__ . '/src',
-    __DIR__ . '/tests',
+    $root . '/src',
+    $root . '/tests',
 ];
 
 return $configSet
     ->configureBuilder()
+    ->withCache($root . '/tools/.ecs.cache')
     ->withPaths($paths);
