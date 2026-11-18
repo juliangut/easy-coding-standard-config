@@ -50,7 +50,7 @@ final class ConfigSetTest extends TestCase
         /** @var array<string, array<string, mixed>|bool> $rules */
         $rules = (new ReflectionMethod($configSet, 'getRules'))->invoke($configSet);
 
-        self::assertNotEmpty($rules);
+        self::assertNotSame([], $rules);
 
         foreach (array_keys($rules) as $rule) {
             self::assertTrue(class_exists($rule), \sprintf('Rule "%s" is not installed.', $rule));

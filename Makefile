@@ -2,7 +2,7 @@ default: lint
 
 .PHONY: lint-php
 lint-php:
-	vendor/bin/phplint --configuration=.phplint.yml --ansi
+	vendor/bin/phplint lint --configuration=.phplint.yml --ansi
 
 .PHONY: lint-ecs
 lint-ecs:
@@ -23,28 +23,28 @@ fix:
 	make --no-print-directory fix-ecs
 
 
-.PHONY: qa-phpmd
-qa-phpmd:
-	vendor/bin/phpmd src ansi unusedcode,naming,design,controversial,codesize
+.PHONY: analyse-phpmd
+analyse-phpmd:
+	vendor/bin/phpmd analyze --format=ansi --ruleset=unusedcode --ruleset=naming --ruleset=design --ruleset=controversial --ruleset=codesize --no-progress src
 
-.PHONY: qa-phpmnd
-qa-phpmnd:
+.PHONY: analyse-phpmnd
+analyse-phpmnd:
 	vendor/bin/phpmnd --ansi src
 
-.PHONY: qa-compatibility
-qa-compatibility:
-	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.4- src
+.PHONY: analyse-compatibility
+analyse-compatibility:
+	vendor/bin/phpcs --standard=phpcompatibility.xml.dist
 
-.PHONY: qa-phpstan
-qa-phpstan:
+.PHONY: analyse-phpstan
+analyse-phpstan:
 	vendor/bin/phpstan analyse --configuration=phpstan.neon.dist --memory-limit=2G --no-progress
 
-.PHONY: qa
-qa:
-	make --no-print-directory qa-phpmd && \
-	make --no-print-directory qa-phpmnd && \
-	make --no-print-directory qa-compatibility && \
-	make --no-print-directory qa-phpstan
+.PHONY: analyse
+analyse:
+	make --no-print-directory analyse-phpmd && \
+	make --no-print-directory analyse-phpmnd && \
+	make --no-print-directory analyse-compatibility && \
+	make --no-print-directory analyse-phpstan
 
 .PHONY: test-phpunit
 test-phpunit:

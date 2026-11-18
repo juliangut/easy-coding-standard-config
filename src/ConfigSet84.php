@@ -27,7 +27,7 @@ use Symplify\CodingStandard\Fixer\Commenting\SwitchedTypeAndNameFixer;
 /**
  * @phpstan-import-type PhpCsFixerRuleList from AbstractConfigSet
  */
-class ConfigSet84 extends ConfigSet82
+class ConfigSet84 extends ConfigSet83
 {
     protected function getRequiredPhpVersion(): string
     {
